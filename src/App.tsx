@@ -1,24 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import Match from './models/match';
+import './styles/styles.css';
+
+import {WrapperTop} from "./components/WrapperTop"
+import {WrapperBottom} from "./components/WrapperBottom"
+
 
 function App() {
+ 
+ 
+  // useEffect(() => {
+  //   const script = document.createElement('script');
+  
+  //   script.src = './models/match';
+  //   script.async = true;
+  
+  //   document.body.appendChild(script);
+  
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   }
+  // }, []);
+
+  
+  const match = new Match()
+  const [pilesTop, setPilesTop] = useState(match.pilesTop);
+  const [pilesBottom, setPilesBottom] = useState(match.pilesBottom);
+
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <WrapperTop pilesTop={pilesTop} />
+      <WrapperBottom pilesBottom={pilesBottom} />
     </div>
   );
 }

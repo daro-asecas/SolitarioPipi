@@ -1,23 +1,28 @@
-import { Deck, Card } from "../models/deck";
-import {ShowCard} from "./ShowCard"
+import { Deck } from "../models/deck";
+import { rules } from "../models/rules";
+import ShowPile from "./ShowPile"
+import ShowDeck from "./ShowDeck"
+import ShowExtraCards from "./ShowExtraCards"
 
-export function WrapperTop( {pilesTop}:{pilesTop:Array<Deck>} ) {
-  const NUMBER_OF_SLOTS = 8
-
+export default function WrapperTop( {suitStacks,deck,riseCard,riseCardWithDoubleClick,dealFunction}:{suitStacks:Array<Deck>,deck:Deck,riseCard:Function,riseCardWithDoubleClick:Function,dealFunction:Function} ) {
   return (
     <div className="wrapper" id="wrapper-top">
 
-      {pilesTop.map((pile, i) => {
-        const card = pile.cards.length?pile.cards[0]:new Card("0","0")
-        return (
-          <div className="suit-slot" id={`suit-slot-${i}`} >
-            <ShowCard card={card} />
-          </div>
+      {suitStacks.map((pile, i) => { return (
+        <ShowPile key={i} where={"top"} pileIndex={i} pile={pile} stacked={true} suitStacks={suitStacks} callbackOnDrop={riseCard} riseCardWithDoubleClick={()=>{return}} />
       )})}
 
-      <div className="card-slot-empty" />
+      { deck.numberOfCards > rules.NUMBER_OF_CARDS_PER_ROUND
+        ?
+        <>
+          <div className="card-slot-placeholder" />
+          <ShowDeck deck={deck} dealFunction={dealFunction} />
+        </>
 
-      <ShowCard card={new Card("♥","Q",true)} />
+        :
+          <ShowExtraCards deck={deck} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+      }
+
 
     </div>
   );

@@ -1,14 +1,16 @@
 import { Deck, Card } from "../models/deck";
-import {ShowPile} from "./ShowPile"
+import { rules } from "../models/rules";
+import ShowPile from "./ShowPile"
 
-export function WrapperBottom({pilesBottom}:{pilesBottom:Array<Deck>}) {
-  const NUMBER_OF_SLOTS = 10
-
+export default function WrapperBottom({pilesBottom,suitStacks,moveSubPile,riseCardWithDoubleClick}:
+                                      {pilesBottom:Array<Deck>,suitStacks:Array<Deck>,moveSubPile:Function,riseCardWithDoubleClick:Function}) {
   return (
     <div className="wrapper" id="wrapper-bottom">
 
-      {[...Array(NUMBER_OF_SLOTS)].map((e, i) => { return (
-        <ShowPile deck={new Deck()} pileNumber={i} />
+      {pilesBottom.map((pile, i) => {
+        
+        return (
+          <ShowPile key={i} where={"bottom"} pileIndex={i} pile={pile} stacked={false} suitStacks={suitStacks} callbackOnDrop={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
       )})}
 
     </div>

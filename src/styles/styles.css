@@ -5,6 +5,8 @@
 }
 
 #root {
+  width: 100vw;
+  height: 100vh;
   background-color: green;
   position: relative;
   display: flex;
@@ -37,20 +39,40 @@
   position: relative;
 }
 
-.game-button {
+*/
+
+button {
   z-index: 5;
   position: relative;
-  background: var(--form-btn-bkg-color);
-  border: solid 1px var(--form-btn-border-color);
-  border-radius: var(--item-border-radius);
-  font-weight: bold;
-  color: white;
-  padding: 0.25rem;
-  padding-bottom: 0rem;
+  top: 10rem;
+  background: chocolate;
+  border: solid 3px black;
+  border-radius: .3rem;
+  /* font-weight: bold; */
+  font-size: 2rem;
+  color: black;
+  padding: 2rem;
   text-align: center;
   vertical-align: middle;
-} */
+}
 
+button.button-deal {
+  top: 0;
+  font-size: 1rem;
+  padding: 0.2rem;
+
+
+}
+
+button:hover {
+  scale: 1.02;
+  filter: brightness(110%);
+  cursor: pointer;
+}
+
+button:active {
+  scale: 0.97;
+}
 
 /* #game-message{
   position: absolute;
@@ -71,23 +93,49 @@
   flex-direction: column;
 }
 
-.card-slot.semi-hidden {
-  position: relative;
-  height: 1.25rem;
-  width: 3rem;
-}
-
-
-.card-slot-empty, .card-slot, .card-back, .card {
-  position: relative;
-  height: 4.85rem;
-  width: 3rem;
-  border: solid 1px black ;
+.card-group {
+  display: flex;
+  flex-direction: column;
   border-radius: .5rem;
 }
 
-.card-slot-empty {
+.card-group:nth-child(2) {
+  margin-block-start: -3.3rem;
+
+  transition: ease-in-out 0.35s;
+}
+
+.card-group > .card:hover + * {
+  margin-block-start: -1.5rem;
+
+  transition: ease-in-out 0.35s;
+}
+
+.card-group.stacked :nth-child(2) {
+  margin-block-start: -4.85rem;
+}
+
+/* .card-slot.semi-hidden {
+  position: relative;
+  height: 1.25rem;
+  width: 3rem;
   border: 0;
+} */
+
+.suit-slot, .pile-slot.empty, .card-back, .card, .card-slot-placeholder {
+  position: relative;
+  height: 4.85rem;
+  width: 3rem;
+  border: solid 1px black;
+  border-radius: .35rem;
+}
+
+.card-slot, .card-slot-placeholder, .pile-slot {
+  border: 0;
+}
+
+.card.full-visible {
+  z-index: 999;
 }
 
 .card-back {
@@ -145,6 +193,7 @@
                 2px 0px 0.1rem rgb(255 255 255 / 40%),
                 0px 2px 0.1rem rgb(255 255 255 / 40%);
   user-select: none;
+  overflow: hidden;
 }
 
 .card.red{
@@ -153,10 +202,6 @@
 
 .card.black{
   color:black;
-}
-
-.card::before {
-  z-index: 1;
 }
 
 .card::before,
@@ -176,49 +221,92 @@
 .card::after {
   bottom: -3%;
   right: 3%;
-  transform: rotate(180deg)
+  transform: rotate(180deg);
 }
 
-/* #hand {
-  width: 99%;
+.on-drag-over {
+  z-index: 1000;
+}
+
+.on-drag {
+  opacity: 100%;
+  /* visibility: hidden; */
+  scale: 1.1;
+}
+
+.dragging-over-glow {
+  z-index: -1;
+  position: absolute;
+  height: 4.85rem;
+  width: 3rem;
+  border-radius: .5rem;
+  background-color: transparent;
+  box-shadow: 0;
+}
+
+.on-drag-over .dragging-over-glow {
+  /* z-index: 999; */
+  --glow-color: 255, 255, 145;
+  background-color: rgba(var(--glow-color), 0.25) ;
+  box-shadow: 0 0 1.5rem 0.5rem rgb(var(--glow-color), 0.65);
+}
+
+.pile-slot.empty.on-drag-over {
+  --glow-color: 255, 255, 145;
+  background-color: rgba(var(--glow-color), 0.4) ;
+  box-shadow: 0 0 1.5rem 0.5rem rgb(var(--glow-color), 0.65);
+}
+
+#extra-cards-wrapper {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: right;
+  width: 6.5rem;
 }
 
-.hand-card-slot {
-  background: black;
-  height: 6rem;
-  max-width: 3.5rem;
+#extra-cards-wrapper .card-extra.full-size {
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 3rem;
+  max-width: 3rem;
+
+  transition: ease-in-out 0.35s;
+}
+
+#extra-cards-wrapper .card-extra {
+  flex-shrink: 1;
+  flex-grow: 1;
+  max-width: 1.5rem;
   min-width: 0.5rem;
   border-radius: 0.5rem;
-  flex-shrink: 1;
-  position:relative;
+
+  transition: ease-in-out 0.35s;
 }
 
-#hand > #hand-card-slot-0 {
-  flex-shrink: 0;
-  transition-duration: 0.5s;
-}
-
-
-#hand .hand-card-slot-playable {
-  flex-shrink: 0.25;
-  transition-duration: 0.5s;
-}
-
-
-#hand .hand-card-slot-playable::before {
-  content: "";
+#extra-cards-wrapper .card-extra:not(.full-size):hover {
+  flex-shrink: .5;
+  flex-grow: 2;
+  max-width: 2.5rem;
+  min-width: 0.5rem;
   border-radius: 0.5rem;
-  position: absolute;
-  height: calc(100% - 0rem);
-  width: calc(100% - 0rem);
-  top: +0rem;
-  left: calc(+0rem);
-  background: linear-gradient(0deg, rgba(255, 162, 0, 1), rgba(255, 183, 0, 1));
 
+  transition: ease-in-out 0.35s;
+}
+
+
+
+
+
+
+
+
+/*
+
+selector {
+  
+  transition-duration: 0.5s;
   animation: beating-border 1.5s cubic-bezier(.42,0,.58,1) infinite;
+
 }
 
 @keyframes beating-border {
@@ -236,29 +324,4 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-#hand .card {
-  height: 6rem;
-  width: 3.5rem;
-} */
-
-/* .card.playable {
-  background-color: white;
-}
-
-.card.not-playable {
-  background-color: rgb(255 255 255 / 50%);
-  text-shadow: 0 0;
-}
-
-.card.not-playable  > img {
-  filter: brightness(50%);
 } */

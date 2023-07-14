@@ -1,41 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import Match from './models/match';
+import { useState } from 'react';
 import './styles/styles.css';
+import { Deck, Card } from './models/deck';
+import Match from './models/match';
+import MatchWrapper from "./components/MatchWrapper"
+import DealButton from './components/DealButton';
 
-import {WrapperTop} from "./components/WrapperTop"
-import {WrapperBottom} from "./components/WrapperBottom"
+export default function App() {
 
+    //  let match: Match = new Match
+  const [match, setMatch] = useState<Match>(new Match(undefined));
+  const [isMatchStarted, setIsMatchStarted] = useState(false);
+  const [suitStacks, setSuitStacks] = useState<Deck[]>();
+  const [pilesBottom, setPilesBottom] = useState<Deck[]>();
+  const [deck, setDeck] = useState<Deck>();
 
-function App() {
- 
- 
-  // useEffect(() => {
-  //   const script = document.createElement('script');
+  function consoleLogMatch () {
+    match.consoleLogMatch()
+  }
+
+  function renderMatch () {
+    if (match) {
+      setSuitStacks([...match.suitStacks])
+      setPilesBottom([...match.pilesBottom])
+      setDeck(new Deck(match.deck))
+    }
+  }
+
+  function startGame () {
+    setMatch(new Match(match))
+    setIsMatchStarted(true)
+    deal()
+    renderMatch()
+  }
   
-  //   script.src = './models/match';
-  //   script.async = true;
+  function deal () {
+    if (match) match.deal()
+    renderMatch()
+  }
   
-  //   document.body.appendChild(script);
-  
-  //   return () => {
-  //     document.body.removeChild(script);
-  //   }
-  // }, []);
+  function riseCard (originWhere:string, originPileIndex:number, quantityOfCards:number, destinStackIndex:number) {
+    if (quantityOfCards != 1) return
+    match.riseCard(originWhere, originPileIndex, destinStackIndex)
+    renderMatch()
+  }
 
-  
-  const match = new Match()
-  const [pilesTop, setPilesTop] = useState(match.pilesTop);
-  const [pilesBottom, setPilesBottom] = useState(match.pilesBottom);
+  function riseCardWithDoubleClick (originWhere:string, originPileIndex:number, cardIndex:number) {
+    match.riseCardWithDoubleClick(originWhere, originPileIndex, cardIndex)
+    renderMatch()
+  }
 
+  function moveSubPile (originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinPileIndex:number) {
+    match.moveSubPile(originWhere, originPileIndex, cardIndex, quantityOfCards, destinPileIndex)
+    renderMatch()
+  }
 
 
 
   return (
-    <div>
-      <WrapperTop pilesTop={pilesTop} />
-      <WrapperBottom pilesBottom={pilesBottom} />
-    </div>
+    <>
+      { (isMatchStarted)
+        ? <MatchWrapper match={match} deal={deal} startGame={startGame} moveSubPile={moveSubPile} riseCard={riseCard} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+        : <DealButton text={"Start!"} callback={startGame} />
+      }
+
+{/* PARA USAR EN DEV
+      <DealButton text={"logMatch"} callback={consoleLogMatch} />
+      <div>eliminar esto</div>
+*/}
+
+    </>
   );
 }
-
-export default App;

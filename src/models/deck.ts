@@ -14,9 +14,9 @@ function freshDeck() {
 }
 
 export class Deck {
-  cards: Array<Card>
-  
-  constructor(deck: Array<Card>|Deck = freshDeck()) {
+  cards: Card[]
+
+  constructor(deck: Card[] | Deck = freshDeck()) {
     this.cards = (deck instanceof Deck)?[...deck.cards]:[...deck]
   }
 
@@ -44,18 +44,23 @@ export class Deck {
     return this.hasCards && rules.isDraggable(this)
   }
 
-  isDropableOnB (pile:Deck) {
+  isDropableOnB (pile: Deck) {
     if (!this.isDraggable) console.error(new Error("Consulting DROPABILITY of a non-draggable pile"))
     return rules.isDropableAonB(this.firstCard, pile.lastCard)
   }
 
+  pop() {
+    if (this.cards.length) return this.cards.shift()
+  }
 
-  play(index: number) {
+  extractCard(index: number) {
+    // if (this.cards.length===) return this.cards.splice(index,1)[0]
     return this.cards.splice(index, 1)[0]
   }
 
-  pop() {
-    if (this.cards.length) return this.cards.shift()
+  extractSubPile(index:number, quantity:number) {
+    // if (this.cards.length===) return this.cards.splice(index,1)[0]
+    return new Deck(this.cards.splice(index, quantity))
   }
 
   spliceLast() {
@@ -137,6 +142,10 @@ export class Card {
     if (!this) return
     this.isShowingFace = true
     return this
+  }
+
+  isDropableOnB (pile: Deck) {
+    return rules.isDropableAonB(this, pile.lastCard)
   }
 
 }

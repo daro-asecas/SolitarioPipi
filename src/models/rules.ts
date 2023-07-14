@@ -22,7 +22,6 @@ export const rules = {
     }),
 
     isDraggable(group:Deck) {
-        // console.log(group)
         if (group.numberOfCards===1 && group.firstCard.isShowingFace)   {return true}
         for (let i=group.numberOfCards-1; i>0; i--) {
             if (!rules.isDropableAonB(group.cards[i],group.cards[i-1])) {return false}

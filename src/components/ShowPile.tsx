@@ -8,13 +8,13 @@ export default function ShowPile( {where, pileIndex, pile, stacked, suitStacks,c
 
   const pileToRender = (pile.numberOfCards>2&&stacked)?new Deck([pile.cards[pile.numberOfCards-2],pile.lastCard]):pile
   const idName = `${where}-pile-slot-${pileIndex}`
-  const classEmptyIfNeeded = (pile.hasCards)?"":"empty"
+  const classEmpty = (pile.hasCards)?"":"empty"
 
-  const [classOnDragOverIfNeeded, setClassOnDragOverIfNeeded] = useState("")
+  const [classOnDragOver, setClassOnDragOver] = useState("")
   // let classOnDragOver = ""
 
   function handleDrop (e: React.DragEvent) {
-    setClassOnDragOverIfNeeded("")
+    setClassOnDragOver("")
     let originWhere = e.dataTransfer.getData("originWhere")
     let originPileIndex = e.dataTransfer.getData("originPileIndex")
     let cardIndex = e.dataTransfer.getData("cardIndex")
@@ -24,25 +24,25 @@ export default function ShowPile( {where, pileIndex, pile, stacked, suitStacks,c
   
   function handleDragOverStart (e: React.DragEvent) {
     if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
-    setClassOnDragOverIfNeeded("on-drag-over")
+    setClassOnDragOver("on-drag-over")
   }
   
   function handleDragOver (e: React.DragEvent) {
     e.stopPropagation()
     e.preventDefault()
     if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
-    setClassOnDragOverIfNeeded("on-drag-over")
+    setClassOnDragOver("on-drag-over")
   }
   
   function handleDragOverEnd (e: React.DragEvent) {
-    setClassOnDragOverIfNeeded("")
+    setClassOnDragOver("")
   }
 
 
   return (
     <div
       id={idName}
-      className={`pile-slot ${classEmptyIfNeeded} ${classOnDragOverIfNeeded}`}
+      className={`pile-slot ${where} ${classEmpty} ${classOnDragOver}`}
       onDrop={handleDrop}
       onDragEnter={handleDragOverStart}
       onDragOver={handleDragOver}

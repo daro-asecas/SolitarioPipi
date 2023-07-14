@@ -12,29 +12,34 @@ function emptyPilesArray(number:number) {
 }
 
 export default class Match {
-  deck:        Deck
+  // deck:        Deck
   initialDeck: Deck
-  piles:       {top:Deck[] , bottom:Deck[]}
+  piles:       {deck:Deck[], top:Deck[] , bottom:Deck[]}
 //  suitStacks: Array<Deck>
 //  pilesBottom: Array<Deck>
 
 
   constructor ( match:{
-      deck:        Deck,
-      initialDeck: Deck|undefined,
-      piles:       {top:Deck[] , bottom:Deck[]}
+      // deck:        Deck,
+      initialDeck: Deck | undefined,
+      piles:       {deck:Deck[], top:Deck[] , bottom:Deck[]}
 //      suitStacks:  Array<Deck>|undefined,
 //      pilesBottom: Array<Deck>|undefined
   } | undefined ) {
 
-    this.deck        = (match && match.deck)          || startingDeck()
-    this.initialDeck = (match && match.initialDeck)   || new Deck(this.deck)
-    this.piles = {
-      top:    (match && match.piles.top)    || emptyPilesArray(rules.NUMBER_OF_SUIT_STACKS),
-      bottom: (match && match.piles.bottom) || emptyPilesArray(rules.NUMBER_OF_PILES_BOTTOM)
-    }
+//    this.deck        = (match && match.deck)          || startingDeck()
+    this.piles =  {
+                    deck:   (match && match.piles.deck)          || [startingDeck()],
+                    top:    (match && match.piles.top)    || emptyPilesArray(rules.NUMBER_OF_SUIT_STACKS),
+                    bottom: (match && match.piles.bottom) || emptyPilesArray(rules.NUMBER_OF_PILES_BOTTOM)
+                  }
+    this.initialDeck = (match && match.initialDeck)   || new Deck(this.piles.deck[0])
   
     // this.deal()
+  }
+
+  get deck () {
+    return this.piles.deck[0]
   }
 
   get pilesBottom () {
@@ -50,7 +55,7 @@ export default class Match {
   }
 
   restartMatch () {
-    this.deck         = new Deck(this.initialDeck.cards)
+    this.piles.deck[0]         = new Deck(this.initialDeck.cards)
     this.piles.top    = emptyPilesArray(rules.NUMBER_OF_SUIT_STACKS)
     this.piles.bottom = emptyPilesArray(rules.NUMBER_OF_PILES_BOTTOM)
   }
@@ -68,31 +73,35 @@ export default class Match {
     }
   }
  
-  riseCard (originWhere:string, originPileIndex:number, destinStackIndex:number) {
-    if ( originWhere!=="top" && originWhere!=="bottom" ) return new Error("Incorrect WHERE")
+  riseCard (originWhere:string, originPileIndex:number, cardIndex:number, destinStackIndex:number) {
+    if ( originWhere!=="top" && originWhere!=="bottom" && originWhere!=="deck" ) return new Error("Incorrect WHERE")
     if ( originWhere==="top" && originPileIndex===destinStackIndex ) return
 
-    if (!rules.isRisableAonB(this.piles[originWhere][originPileIndex].lastCard,this.suitStacks[destinStackIndex].lastCard)) return
+    if (!rules.isRisableAonB(this.piles[originWhere][originPileIndex].cards[cardIndex],this.suitStacks[destinStackIndex].lastCard)) return
     
-    this.suitStacks[destinStackIndex].push(this.piles[originWhere][originPileIndex].spliceLast()?.turnUp())
+    this.suitStacks[destinStackIndex].push(this.piles[originWhere][originPileIndex].extractCard(cardIndex))
     this.piles[originWhere][originPileIndex].turnUpLastCard()
   }
 
   riseCardWithDoubleClick (originWhere:string, originPileIndex:number, cardIndex:number) {
+    if ( originWhere!=="top" && originWhere!=="bottom" && originWhere!=="deck" ) return new Error("Incorrect WHERE")
+
     let finished = false
-    let cardToRise = (originWhere==="bottom")?this.pilesBottom[originPileIndex].lastCard:this.deck.cards[cardIndex]
+    let cardToRise = this.piles[originWhere][originPileIndex].cards[cardIndex]
     this.suitStacks.forEach((stack,destinStackIndex)=>{
       if (finished) return
       if (!rules.isRisableAonB(cardToRise, this.suitStacks[destinStackIndex].lastCard)) return
 
       this.suitStacks[destinStackIndex].push(cardToRise)
 
-      if (originWhere==="deck") {
-        this.deck.cards.splice(cardIndex,1)
-      } else {
-        this.pilesBottom[originPileIndex].spliceLast()?.turnUp()
-        this.pilesBottom[originPileIndex].turnUpLastCard()
-      }
+      // if (originWhere==="deck") {
+      //   this.deck.cards.splice(cardIndex,1)
+      // } else {
+        //   this.pilesBottom[originPileIndex].spliceLast()?.turnUp()
+        //   this.pilesBottom[originPileIndex].turnUpLastCard()
+        // }
+        this.piles[originWhere][originPileIndex].extractCard(cardIndex)
+        this.piles[originWhere][originPileIndex].turnUpLastCard()
 
       finished = true
     })
@@ -101,21 +110,13 @@ export default class Match {
   moveSubPile (originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinPileIndex:number) {
     if ( originWhere!=="top" && originWhere!=="bottom" && originWhere!=="deck" ) return new Error("Incorrect WHERE")
     if ( originWhere==="bottom" && originPileIndex===destinPileIndex ) return
-
-    const subPile = this.pilesBottom[originPileIndex].copy.extractSubpileOfLast(quantityOfCards)
+    
+    const subPile = new Deck(this.piles[originWhere][originPileIndex].cards.slice(cardIndex, parseInt(`${cardIndex}`)+parseInt(`${quantityOfCards}`)))
     if ( !subPile.isDraggable || !subPile.isDropableOnB(this.pilesBottom[destinPileIndex]) ) return
 
-    if (originWhere === "deck") {
       this.pilesBottom[destinPileIndex]
-      .push(this.deck.cards.splice(cardIndex,1)[0])
-    } else {
-
-      
-      //    const originArrayReference = (originWhere==="bottom")?this.pilesBottom:this.suitStacks
-      this.pilesBottom[destinPileIndex]
-      .join(this.piles[originWhere][originPileIndex].extractSubpileOfLast(quantityOfCards))
-      this.piles[originWhere][originPileIndex].turnUpLastCard()
-    }
+      .join(this.piles[originWhere][originPileIndex].extractSubPile(cardIndex, quantityOfCards))
+      this.piles[originWhere][originPileIndex].turnUpLastCard()    
   }
 
 

@@ -1,17 +1,18 @@
 @import "./variables.css";
+@import "./layout.css";
 
 * {
   box-sizing: border-box;
 }
 
-#root {
+#root, #wrapper-match {
   width: 100vw;
   height: 100vh;
   background-color: green;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   user-select: none;
   overflow-x: hidden;
@@ -21,7 +22,7 @@
   margin-top: 1rem;
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  gap: var(--wrapper-gap);
 }
 
 /* #game-button-container {
@@ -111,8 +112,8 @@ button:active {
   transition: ease-in-out 0.35s;
 }
 
-.card-group.stacked :nth-child(2) {
-  margin-block-start: -4.85rem;
+.card-group.stacked :nth-child(2):not(.dragging-over-glow) {
+  margin-block-start: calc(var(--card-height)*-1);
 }
 
 /* .card-slot.semi-hidden {
@@ -124,10 +125,10 @@ button:active {
 
 .suit-slot, .pile-slot.empty, .card-back, .card, .card-slot-placeholder {
   position: relative;
-  height: 4.85rem;
-  width: 3rem;
+  height: var(--card-height);
+  width: var(--card-width);
+  border-radius: var(--card-border-radius);
   border: solid 1px black;
-  border-radius: .35rem;
 }
 
 .card-slot, .card-slot-placeholder, .pile-slot {
@@ -224,10 +225,6 @@ button:active {
   transform: rotate(180deg);
 }
 
-.on-drag-over {
-  z-index: 1000;
-}
-
 .on-drag {
   opacity: 100%;
   /* visibility: hidden; */
@@ -237,11 +234,15 @@ button:active {
 .dragging-over-glow {
   z-index: -1;
   position: absolute;
-  height: 4.85rem;
-  width: 3rem;
+  height: var(--card-height);
+  width: var(--card-width);
   border-radius: .5rem;
   background-color: transparent;
   box-shadow: 0;
+}
+
+.on-drag-over  {
+  z-index: 1000;
 }
 
 .on-drag-over .dragging-over-glow {
@@ -261,24 +262,23 @@ button:active {
   display: flex;
   flex-direction: row;
   justify-content: right;
-  width: 6.5rem;
+  width: calc(var(--card-width)*2 + var(--wrapper-gap));
 }
 
 #extra-cards-wrapper .card-extra.full-size {
   flex-shrink: 0;
   flex-grow: 0;
-  width: 3rem;
-  max-width: 3rem;
+  width: var(--card-width);
+  max-width: var(--card-width);
 
   transition: ease-in-out 0.35s;
 }
 
-#extra-cards-wrapper .card-extra {
+#extra-cards-wrapper .card-extra:not(.full-size) {
   flex-shrink: 1;
   flex-grow: 1;
   max-width: 1.5rem;
   min-width: 0.5rem;
-  border-radius: 0.5rem;
 
   transition: ease-in-out 0.35s;
 }
@@ -288,7 +288,6 @@ button:active {
   flex-grow: 2;
   max-width: 2.5rem;
   min-width: 0.5rem;
-  border-radius: 0.5rem;
 
   transition: ease-in-out 0.35s;
 }

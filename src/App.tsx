@@ -7,7 +7,6 @@ import DealButton from './components/DealButton';
 
 export default function App() {
 
-    //  let match: Match = new Match
   const [match, setMatch] = useState<Match>(new Match(undefined));
   const [isMatchStarted, setIsMatchStarted] = useState(false);
   // eslint-disable-next-line
@@ -41,23 +40,22 @@ export default function App() {
     renderMatch()
   }
   
-  function riseCard (originWhere:string, originPileIndex:number, quantityOfCards:number, destinStackIndex:number) {
-    if (quantityOfCards !== 1) return
-    match.riseCard(originWhere, originPileIndex, destinStackIndex)
+  function riseCard (originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinStackIndex:number) {
+  // eslint-disable-next-line
+    if (quantityOfCards != 1) return
+    match.riseCard(originWhere, originPileIndex, cardIndex, destinStackIndex)
     renderMatch()
   }
 
   function riseCardWithDoubleClick (originWhere:string, originPileIndex:number, cardIndex:number) {
     match.riseCardWithDoubleClick(originWhere, originPileIndex, cardIndex)
     renderMatch()
-  }
+  } 
 
   function moveSubPile (originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinPileIndex:number) {
-    match.moveSubPile(originWhere, originPileIndex, cardIndex, quantityOfCards, destinPileIndex)
+    match.moveSubPile(originWhere, originPileIndex, cardIndex, (quantityOfCards), destinPileIndex)
     renderMatch()
   }
-
-
 
   return (
     <>
@@ -68,7 +66,6 @@ export default function App() {
 
 {/* PARA USAR EN DEV
       <DealButton text={"logMatch"} callback={consoleLogMatch} />
-      <div>eliminar esto</div>
 */}
 
     </>

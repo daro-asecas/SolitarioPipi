@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './styles/styles.css';
-import { Deck, Card } from './models/deck';
+import { Deck } from './models/deck';
 import Match from './models/match';
 import MatchWrapper from "./components/MatchWrapper"
 import DealButton from './components/DealButton';
@@ -10,13 +10,16 @@ export default function App() {
     //  let match: Match = new Match
   const [match, setMatch] = useState<Match>(new Match(undefined));
   const [isMatchStarted, setIsMatchStarted] = useState(false);
+  // eslint-disable-next-line
   const [suitStacks, setSuitStacks] = useState<Deck[]>();
+  // eslint-disable-next-line
   const [pilesBottom, setPilesBottom] = useState<Deck[]>();
+  // eslint-disable-next-line
   const [deck, setDeck] = useState<Deck>();
 
-  function consoleLogMatch () {
-    match.consoleLogMatch()
-  }
+  // function consoleLogMatch () {
+  //   match.consoleLogMatch()
+  // }
 
   function renderMatch () {
     if (match) {
@@ -39,7 +42,7 @@ export default function App() {
   }
   
   function riseCard (originWhere:string, originPileIndex:number, quantityOfCards:number, destinStackIndex:number) {
-    if (quantityOfCards != 1) return
+    if (quantityOfCards !== 1) return
     match.riseCard(originWhere, originPileIndex, destinStackIndex)
     renderMatch()
   }

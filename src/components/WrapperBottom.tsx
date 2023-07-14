@@ -1,5 +1,4 @@
-import { Deck, Card } from "../models/deck";
-import { rules } from "../models/rules";
+import { Deck } from "../models/deck";
 import ShowPile from "./ShowPile"
 
 export default function WrapperBottom({pilesBottom,suitStacks,moveSubPile,riseCardWithDoubleClick}:

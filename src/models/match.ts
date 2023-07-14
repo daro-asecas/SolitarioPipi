@@ -1,4 +1,3 @@
-import { forEachChild } from "typescript"
 import { Deck } from "./deck"
 import { rules } from "./rules"
 
@@ -70,7 +69,7 @@ export default class Match {
   }
  
   riseCard (originWhere:string, originPileIndex:number, destinStackIndex:number) {
-    if ( originWhere!="top" && originWhere!="bottom" ) return new Error("Incorrect WHERE")
+    if ( originWhere!=="top" && originWhere!=="bottom" ) return new Error("Incorrect WHERE")
     if ( originWhere==="top" && originPileIndex===destinStackIndex ) return
 
     if (!rules.isRisableAonB(this.piles[originWhere][originPileIndex].lastCard,this.suitStacks[destinStackIndex].lastCard)) return
@@ -100,7 +99,7 @@ export default class Match {
   }
 
   moveSubPile (originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinPileIndex:number) {
-    if ( originWhere!="top" && originWhere!="bottom" && originWhere!="deck" ) return new Error("Incorrect WHERE")
+    if ( originWhere!=="top" && originWhere!=="bottom" && originWhere!=="deck" ) return new Error("Incorrect WHERE")
     if ( originWhere==="bottom" && originPileIndex===destinPileIndex ) return
 
     const subPile = this.pilesBottom[originPileIndex].copy.extractSubpileOfLast(quantityOfCards)

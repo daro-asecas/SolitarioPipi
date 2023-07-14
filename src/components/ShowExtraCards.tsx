@@ -1,5 +1,4 @@
 import { Deck } from "../models/deck";
-import { rules } from "../models/rules";
 import ShowCard from "./ShowCard";
 
 import { useState } from "react";
@@ -7,8 +6,6 @@ import { useState } from "react";
 
 
 export default function ShowExtraCards( {deck, riseCardWithDoubleClick}:{deck:Deck, riseCardWithDoubleClick:Function } ) {
-  console.log(deck)
-  console.log(deck.hasCards)
   const [classOnDrag,setClassOnDrag] = useState("")
 
   function handleDragging (e: React.DragEvent<HTMLDivElement>, index:number) {
@@ -26,7 +23,7 @@ export default function ShowExtraCards( {deck, riseCardWithDoubleClick}:{deck:De
   }
 
   function handleDragEnd (e: React.DragEvent<HTMLDivElement>) {
-    if (classOnDrag!="") {setClassOnDrag("")}
+    if (classOnDrag!=="") {setClassOnDrag("")}
   }
 
   return (

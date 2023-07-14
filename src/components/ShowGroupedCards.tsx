@@ -34,7 +34,7 @@ export default function ShowGroupedCards( {where, pileIndex, firsCardIndex, grou
   }
 
   function handleDragEnd (e: React.DragEvent<HTMLDivElement>) {
-    if (classOnDrag!="") {setClassOnDrag("")}
+    if (classOnDrag!=="") {setClassOnDrag("")}
   }
 
   return (

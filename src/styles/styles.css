@@ -47,22 +47,27 @@ button {
   position: relative;
   top: 10rem;
   background: chocolate;
+  color: black;
   border: solid 3px black;
   border-radius: .3rem;
   /* font-weight: bold; */
-  font-size: 2rem;
-  color: black;
-  padding: 2rem;
   text-align: center;
   vertical-align: middle;
 }
 
 button.button-deal {
+  border-width: 3px;
   top: 0;
   font-size: 1rem;
   padding: 0.2rem;
+}
 
-
+#root > button {
+  border-width: 4px;
+  top: 40%;
+  font-size: 1.8rem;
+  padding: 1rem;
+  font-weight: bold;
 }
 
 button:hover {
@@ -223,6 +228,16 @@ button:active {
   bottom: -3%;
   right: 3%;
   transform: rotate(180deg);
+}
+
+.card[draggable],
+[draggable] > *:not(.card-group) {
+  filter: contrast(1);
+}
+
+.card[draggable="false"],
+[draggable="false"] > *:not(.card-group) {
+  filter: contrast(0.66);
 }
 
 .on-drag {

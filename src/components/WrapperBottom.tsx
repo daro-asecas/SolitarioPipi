@@ -1,15 +1,20 @@
-import { Deck } from "../models/deck";
+import { useContext } from 'react';
+import { MatchContext } from '../App';
+
 import ShowPile from "./ShowPile"
 
-export default function WrapperBottom({pilesBottom,suitStacks,moveSubPile,riseCardWithDoubleClick}:
-                                      {pilesBottom:Array<Deck>,suitStacks:Array<Deck>,moveSubPile:Function,riseCardWithDoubleClick:Function}) {
+export default function WrapperBottom({moveSubPile,riseCardWithDoubleClick}:
+                                      {moveSubPile:Function,riseCardWithDoubleClick:Function}) {
+
+  const match = useContext(MatchContext)
+
   return (
     <div className="wrapper" id="wrapper-bottom">
 
-      {pilesBottom.map((pile, i) => {
+      {match.pilesBottom.map((pile, i) => {
         
         return (
-          <ShowPile key={i} where={"bottom"} pileIndex={i} pile={pile} stacked={false} suitStacks={suitStacks} callbackOnDrop={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+          <ShowPile key={i} where={"bottom"} pileIndex={i} pile={pile} stacked={false} callbackOnDrop={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
       )})}
 
     </div>

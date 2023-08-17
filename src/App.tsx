@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './styles/styles.css';
 import { Deck } from './models/deck';
-import Match from './models/match';
+import Match, {MatchBlank} from './models/match';
 import MatchWrapper from "./components/MatchWrapper"
 import DealButton from './components/DealButton';
+
+export const MatchContext = React.createContext<Match>(MatchBlank)
+export const PointerContext = React.createContext<{}>({x:0, y:0})
 
 export default function App() {
 
@@ -59,15 +62,18 @@ export default function App() {
 
   return (
     <>
-      { (isMatchStarted)
-        ? <MatchWrapper match={match} deal={deal} startGame={startGame} moveSubPile={moveSubPile} riseCard={riseCard} riseCardWithDoubleClick={riseCardWithDoubleClick} />
-        : <DealButton text={"Start!"} callback={startGame} />
-      }
+      <MatchContext.Provider value={match}>
 
-{/* PARA USAR EN DEV
-      <DealButton text={"logMatch"} callback={consoleLogMatch} />
-*/}
+        { (isMatchStarted)
+          ? <MatchWrapper deal={deal} startGame={startGame} moveSubPile={moveSubPile} riseCard={riseCard} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+          : <DealButton text={"Start!"} callback={startGame} />
+        }
 
+  {/* PARA USAR EN DEV
+        <DealButton text={"logMatch"} callback={consoleLogMatch} />
+  */}
+
+      </MatchContext.Provider>
     </>
   );
 }

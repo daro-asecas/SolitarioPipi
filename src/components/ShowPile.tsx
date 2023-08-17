@@ -1,10 +1,15 @@
+import { useContext } from 'react';
+import { MatchContext } from '../App';
+
 import { Deck } from "../models/deck";
 import ShowGroupedCards from "./ShowGroupedCards";
 import { useState } from "react";
 
 
-export default function ShowPile( {where, pileIndex, pile, stacked, suitStacks,callbackOnDrop, riseCardWithDoubleClick}:
-                  {where:string, pileIndex:number, pile:Deck, stacked:boolean, suitStacks:Deck[], callbackOnDrop:Function, riseCardWithDoubleClick:Function} ) {
+export default function ShowPile( {where, pileIndex, pile, stacked, callbackOnDrop, riseCardWithDoubleClick}:
+                  {where:string, pileIndex:number, pile:Deck, stacked:boolean, callbackOnDrop:Function, riseCardWithDoubleClick:Function} ) {
+
+  const match = useContext(MatchContext)
 
   const pileToRender = (pile.numberOfCards>2&&stacked)?new Deck([pile.cards[pile.numberOfCards-2],pile.lastCard]):pile
   const idName = `${where}-pile-slot-${pileIndex}`
@@ -50,7 +55,7 @@ export default function ShowPile( {where, pileIndex, pile, stacked, suitStacks,c
     >
 
       { pileToRender
-        ?<ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={0} group={pileToRender} stacked={stacked} suitStacks={suitStacks} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+        ?<ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={0} group={pileToRender} stacked={stacked} riseCardWithDoubleClick={riseCardWithDoubleClick} />
         :<div className="card-slot-empty dragging-over-glow" />
       }
 

@@ -1,15 +1,19 @@
-// import { Deck, Card } from '../models/deck';
-import Match from '../models/match';
+import { useContext } from 'react';
+import { MatchContext } from '../App';
+
 import WrapperTop from "./WrapperTop"
 import WrapperBottom from "./WrapperBottom"
 
 
-export default function MatchWrapper( {match,riseCard,moveSubPile,riseCardWithDoubleClick,startGame,deal}:
-                        {match:Match,riseCard:Function,moveSubPile:Function,riseCardWithDoubleClick:Function,startGame:Function,deal:Function} ) {
+export default function MatchWrapper( {riseCard,moveSubPile,riseCardWithDoubleClick,startGame,deal}:
+                        {riseCard:Function,moveSubPile:Function,riseCardWithDoubleClick:Function,startGame:Function,deal:Function} ) {
+
+  const match = useContext(MatchContext)
+
   return (
     <div id="wrapper-match">
-      <WrapperTop suitStacks={match.suitStacks} deck={match.deck} dealFunction={deal} riseCard={riseCard} riseCardWithDoubleClick={riseCardWithDoubleClick} />
-      <WrapperBottom pilesBottom={match.pilesBottom} suitStacks={match.suitStacks} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+      <WrapperTop dealFunction={deal} riseCard={riseCard} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+      <WrapperBottom moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
     </div>
   );
 }

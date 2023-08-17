@@ -1,20 +1,24 @@
+import { useContext, useState } from 'react';
+import { MatchContext } from '../App';
+
 import { Deck } from "../models/deck";
 import { rules } from "../models/rules";
 import ShowCard from "./ShowCard";
 
-import { useState } from "react";
 
 
+export default function ShowGroupedCards( {where, pileIndex, firsCardIndex, group, stacked, riseCardWithDoubleClick}:
+                          {where:string, pileIndex:number, firsCardIndex:number, group:Deck, stacked:boolean, riseCardWithDoubleClick:Function } ) {
 
-export default function ShowGroupedCards( {where, pileIndex, firsCardIndex, group, stacked, suitStacks, riseCardWithDoubleClick}:
-                                        {where:string, pileIndex:number, firsCardIndex:number, group:Deck, stacked:boolean, suitStacks:Deck[], riseCardWithDoubleClick:Function } ) {
+  const match = useContext(MatchContext)
+
   const groupToRender = (group.numberOfCards>2&&stacked)?new Deck([group.cards[group.numberOfCards-2],group.lastCard]):group
 
   const nextGroup = new Deck([...groupToRender.cards])
   const cardToRender = nextGroup.pop()
   
   const draggable = groupToRender?rules.isDraggable(groupToRender):false
-  const risable = cardToRender?rules.isRisable(cardToRender, suitStacks):false
+  const risable = cardToRender?rules.isRisable(cardToRender, match.suitStacks):false
 
   const classStacked = stacked?"stacked":""
   const [classOnDrag,setClassOnDrag] = useState("")
@@ -52,7 +56,7 @@ export default function ShowGroupedCards( {where, pileIndex, firsCardIndex, grou
             />
 
             { nextGroup.hasCards
-              ? <ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={firsCardIndex+1} group={nextGroup} stacked={stacked} suitStacks={suitStacks} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+              ? <ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={firsCardIndex+1} group={nextGroup} stacked={stacked} riseCardWithDoubleClick={riseCardWithDoubleClick} />
               : <div className="dragging-over-glow" />
             }
 

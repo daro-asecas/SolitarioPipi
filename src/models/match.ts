@@ -11,13 +11,17 @@ function emptyPilesArray(number:number) {
   return Array(number).fill(undefined).map(()=> new Deck([]))
 }
 
-export default class Match {
+export interface MatchInterface {
   // deck:        Deck
   initialDeck: Deck
   piles:       {deck:Deck[], top:Deck[] , bottom:Deck[]}
-//  suitStacks: Array<Deck>
-//  pilesBottom: Array<Deck>
+  //  suitStacks: Array<Deck>
+  //  pilesBottom: Array<Deck>
+}
 
+export default class Match implements MatchInterface {
+  initialDeck: Deck
+  piles:       {deck:Deck[], top:Deck[] , bottom:Deck[]}
 
   constructor ( match:{
       // deck:        Deck,
@@ -29,7 +33,7 @@ export default class Match {
 
 //    this.deck        = (match && match.deck)          || startingDeck()
     this.piles =  {
-                    deck:   (match && match.piles.deck)          || [startingDeck()],
+                    deck:   (match && match.piles.deck)   || [startingDeck()],
                     top:    (match && match.piles.top)    || emptyPilesArray(rules.NUMBER_OF_SUIT_STACKS),
                     bottom: (match && match.piles.bottom) || emptyPilesArray(rules.NUMBER_OF_PILES_BOTTOM)
                   }
@@ -132,3 +136,8 @@ export default class Match {
 
 
 }
+
+export const MatchBlank = new Match ({
+  initialDeck: new Deck(),
+  piles:       {deck:emptyPilesArray(1), top:emptyPilesArray(1), bottom:emptyPilesArray(1)}
+})

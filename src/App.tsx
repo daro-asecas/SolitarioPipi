@@ -4,6 +4,7 @@ import { Deck } from './models/deck';
 import Match, {MatchBlank} from './models/match';
 import MatchWrapper from "./components/MatchWrapper"
 import DealButton from './components/DealButton';
+import PointerProvider from './components/PointerPositionContext';
 
 export const MatchContext = React.createContext<Match>(MatchBlank)
 export const PointerContext = React.createContext<{}>({x:0, y:0})
@@ -62,18 +63,20 @@ export default function App() {
 
   return (
     <>
-      <MatchContext.Provider value={match}>
+      <PointerProvider>
+        <MatchContext.Provider value={match}>
 
-        { (isMatchStarted)
-          ? <MatchWrapper deal={deal} startGame={startGame} moveSubPile={moveSubPile} riseCard={riseCard} riseCardWithDoubleClick={riseCardWithDoubleClick} />
-          : <DealButton text={"Start!"} callback={startGame} />
-        }
+          { (isMatchStarted)
+            ? <MatchWrapper deal={deal} startGame={startGame} moveSubPile={moveSubPile} riseCard={riseCard} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+            : <DealButton text={"Start!"} callback={startGame} />
+          }
 
-  {/* PARA USAR EN DEV
-        <DealButton text={"logMatch"} callback={consoleLogMatch} />
-  */}
+    {/* PARA USAR EN DEV
+          <DealButton text={"logMatch"} callback={consoleLogMatch} />
+    */}
 
-      </MatchContext.Provider>
+        </MatchContext.Provider>
+      </PointerProvider>
     </>
   );
 }

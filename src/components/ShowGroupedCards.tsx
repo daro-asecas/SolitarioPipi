@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { MatchContext } from '../App';
+import { UsePointerPosition } from './PointerPositionContext';
 
 import { Deck } from "../models/deck";
 import { rules } from "../models/rules";
@@ -11,6 +12,7 @@ export default function ShowGroupedCards( {where, pileIndex, firsCardIndex, grou
                           {where:string, pileIndex:number, firsCardIndex:number, group:Deck, stacked:boolean, riseCardWithDoubleClick:Function } ) {
 
   const match = useContext(MatchContext)
+  const pointerPosition = UsePointerPosition()
 
   const groupToRender = (group.numberOfCards>2&&stacked)?new Deck([group.cards[group.numberOfCards-2],group.lastCard]):group
 
@@ -23,22 +25,24 @@ export default function ShowGroupedCards( {where, pileIndex, firsCardIndex, grou
   const classStacked = stacked?"stacked":""
   const [classOnDrag,setClassOnDrag] = useState("")
 
-  function handleDragging (e: React.DragEvent<HTMLDivElement>) {
+  function handleDragging (e: React.MouseEvent<HTMLDivElement>) {
     e.stopPropagation()
     // e.preventDefault()
 
+    console.log("start ",pointerPosition)
+
     if (!classOnDrag) {setClassOnDrag("on-drag")}
 
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.dropEffect = "link";
-    e.dataTransfer.setData("originWhere", where)
-    e.dataTransfer.setData("originPileIndex",`${pileIndex}`)
-    e.dataTransfer.setData("cardIndex",`${firsCardIndex}`)
-    e.dataTransfer.setData("quantityOfCards",`${group.numberOfCards}`)
+    // e.dataTransfer.setData("originWhere", where)
+    // e.dataTransfer.setData("originPileIndex",`${pileIndex}`)
+    // e.dataTransfer.setData("cardIndex",`${firsCardIndex}`)
+    // e.dataTransfer.setData("quantityOfCards",`${group.numberOfCards}`)
   }
 
   function handleDragEnd (e: React.DragEvent<HTMLDivElement>) {
     if (classOnDrag!=="") {setClassOnDrag("")}
+    console.log("end ",pointerPosition)
+
   }
 
   return (
@@ -47,7 +51,7 @@ export default function ShowGroupedCards( {where, pileIndex, firsCardIndex, grou
       { groupToRender && cardToRender
 
         ?
-        <div draggable={draggable} className={`card-group ${classStacked} ${classOnDrag}`} onDragStart={(e)=>handleDragging(e)} onDragEnd={(e)=>handleDragEnd(e)} >
+        <div draggable={draggable} className={`card-group ${classStacked} ${classOnDrag}`} onClick={(e)=>handleDragging(e)} onDragEnd={(e)=>handleDragEnd(e)} >
             <ShowCard
               card = {cardToRender}
               draggable = {draggable}

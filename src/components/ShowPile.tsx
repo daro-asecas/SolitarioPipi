@@ -1,61 +1,84 @@
-import { useContext } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { MatchContext } from '../App';
-
 import { Deck } from "../models/deck";
 import ShowGroupedCards from "./ShowGroupedCards";
-import { useState } from "react";
+import { UsePilesPositionUpdate } from "./PilesPositionContext";
 
 
-export default function ShowPile( {where, pileIndex, pile, stacked, callbackOnDrop, riseCardWithDoubleClick}:
-                  {where:string, pileIndex:number, pile:Deck, stacked:boolean, callbackOnDrop:Function, riseCardWithDoubleClick:Function} ) {
+export default function ShowPile( {where, pileIndex, pile, stacked, moveSubPile, riseCardWithDoubleClick}:
+                  {where:string, pileIndex:number, pile:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function} ) {
 
   const match = useContext(MatchContext)
+  const updatePosition = UsePilesPositionUpdate()
+
+  const pileElement = useRef<HTMLDivElement>(null);
+  // const [positionX, setPositionX] = useState<number>(0);
+  // const [positionWidth, setPositionWidth] = useState<number>(0);
+  // const [centerX, setCenterX] = useState<number>(0);
+  // const [positionY, setPositionY] = useState<number>(0);
+  // const [positionHeight, setPositionHeight] = useState<number>(0);
 
   const pileToRender = (pile.numberOfCards>2&&stacked)?new Deck([pile.cards[pile.numberOfCards-2],pile.lastCard]):pile
   const idName = `${where}-pile-slot-${pileIndex}`
   const classEmpty = (pile.hasCards)?"":"empty"
 
   const [classOnDragOver, setClassOnDragOver] = useState("")
-  // let classOnDragOver = ""
 
-  function handleDrop (e: React.DragEvent) {
-    setClassOnDragOver("")
-    let originWhere = e.dataTransfer.getData("originWhere")
-    let originPileIndex = e.dataTransfer.getData("originPileIndex")
-    let cardIndex = e.dataTransfer.getData("cardIndex")
-    let quantityOfCards = e.dataTransfer.getData("quantityOfCards")
-    setTimeout(()=>callbackOnDrop(originWhere, originPileIndex, cardIndex, quantityOfCards, pileIndex), 1)
-  }
-  
-  function handleDragOverStart (e: React.DragEvent) {
-    if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
-    setClassOnDragOver("on-drag-over")
-  }
-  
-  function handleDragOver (e: React.DragEvent) {
-    e.stopPropagation()
-    e.preventDefault()
-    if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
-    setClassOnDragOver("on-drag-over")
-  }
-  
-  function handleDragOverEnd (e: React.DragEvent) {
-    setClassOnDragOver("")
+  const getPosition = () => {
+    const centerX = (pileElement.current?.offsetLeft || 0) + (pileElement.current?.offsetWidth || 0) / 2
+    const positionY = pileElement.current?.offsetTop || 0
+    // setCenterX( (pileElement.current?.offsetLeft || 0) + (pileElement.current?.offsetWidth || 0) / 2 )
+    // setPositionY(pileElement.current?.offsetTop || 0)
+    // setPositionHeight(pileElement.current?.offsetHeight || 0)
+
+    updatePosition(where, pileIndex, centerX, positionY)
   }
 
+  useEffect(() => {
+    window.addEventListener("resize", getPosition);
+    getPosition();
+    return () => window.removeEventListener("resize", getPosition);
+  }, []);
+
+  /* HANDLES FOR DRAGOVER & DROP
+  // function handleDrop (e: React.DragEvent) {
+  //   setClassOnDragOver("")
+
+  //   let originWhere = e.dataTransfer.getData("originWhere")
+  //   let originPileIndex = e.dataTransfer.getData("originPileIndex")
+  //   let cardIndex = e.dataTransfer.getData("cardIndex")
+  //   let quantityOfCards = e.dataTransfer.getData("quantityOfCards")
+  //   setTimeout(()=>callbackOnDrop(originWhere, originPileIndex, cardIndex, quantityOfCards, pileIndex), 1)
+  // }
+
+  // function handleDragOverStart (e: React.DragEvent) {
+  //   if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
+  //   setClassOnDragOver("on-drag-over")
+  // }
+
+  // function handleDragOver (e: React.DragEvent) {
+  //   e.stopPropagation()
+  //   e.preventDefault()
+  //   if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
+  //   setClassOnDragOver("on-drag-over")
+  // }
+
+  // function handleDragOverEnd (e: React.DragEvent) {
+  //   setClassOnDragOver("")
+  // } */
 
   return (
     <div
-      id={idName}
-      className={`pile-slot ${where} ${classEmpty} ${classOnDragOver}`}
-      onDrop={handleDrop}
-      onDragEnter={handleDragOverStart}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragOverEnd}
+    id={idName}
+    className={`pile-slot ${where} ${classEmpty} ${classOnDragOver}`}
+    ref={pileElement}
+    // onDrop={handleDrop}
+    // onDragEnter={handleDragOverStart}
+    // onDragOver={handleDragOver}
+    // onDragLeave={handleDragOverEnd}
     >
-
       { pileToRender
-        ?<ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={0} group={pileToRender} stacked={stacked} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+        ?<ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={0} group={pileToRender} stacked={stacked} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
         :<div className="card-slot-empty dragging-over-glow" />
       }
 

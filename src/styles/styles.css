@@ -103,18 +103,17 @@ button:active {
   display: flex;
   flex-direction: column;
   border-radius: .5rem;
+  transition: transform 0s !important;
 }
 
 .card-group:nth-child(2) {
   margin-block-start: -3.3rem;
-
-  transition: ease-in-out 0.35s;
+  transition: margin-block-start ease-in-out 0.35s;
 }
 
 .card-group > .card:hover + * {
   margin-block-start: -1.5rem;
-
-  transition: ease-in-out 0.35s;
+  transition: margin-block-start ease-in-out 0.35s;
 }
 
 .card-group.stacked :nth-child(2):not(.dragging-over-glow) {
@@ -128,7 +127,7 @@ button:active {
   border: 0;
 } */
 
-.suit-slot, .pile-slot.empty, .card-back, .card, .card-slot-placeholder {
+.suit-slot, .pile-slot, .card-back, .card, .card-slot-placeholder {
   position: relative;
   height: var(--card-height);
   width: var(--card-width);
@@ -136,7 +135,12 @@ button:active {
   border: solid 1px black;
 }
 
-.card-slot, .card-slot-placeholder, .pile-slot {
+.pile-slot.bottom > .card-group {
+  margin-left: -1px;
+  margin-top: -1px;
+}
+
+.card-slot, .card-slot-placeholder {
   border: 0;
 }
 
@@ -200,6 +204,11 @@ button:active {
                 0px 2px 0.1rem rgb(255 255 255 / 40%);
   user-select: none;
   overflow: hidden;
+  transition: margin-block-start ease-in-out 0.35s;
+}
+
+.card:hover {
+  transition: margin-block-start ease-in-out 0.35s;
 }
 
 .card.red{
@@ -230,20 +239,23 @@ button:active {
   transform: rotate(180deg);
 }
 
-.card[draggable],
-[draggable] > *:not(.card-group) {
+/* [draggable] > *:not(.card-group), */
+.draggable {
   filter: contrast(1);
 }
 
-.card[draggable="false"],
-[draggable="false"] > *:not(.card-group) {
+/* [draggable="false"] > *:not(.card-group), */
+.not-draggable {
   filter: contrast(0.66);
 }
 
 .on-drag {
   opacity: 100%;
+  position:relative;
+  z-index: 999;
   /* visibility: hidden; */
-  scale: 1.1;
+  /* scale: 1.1; */
+  transform: translate(calc(var(--dragging-X)*1px),calc(var(--dragging-Y)*1px));
 }
 
 .dragging-over-glow {

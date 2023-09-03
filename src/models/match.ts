@@ -88,8 +88,8 @@ export default class Match implements MatchInterface {
   }
 
   riseCardWithDoubleClick (originWhere:string, originPileIndex:number, cardIndex:number) {
-    if ( originWhere!=="top" && originWhere!=="bottom" && originWhere!=="deck" ) return new Error("Incorrect WHERE")
 
+    if ( originWhere!=="top" && originWhere!=="bottom" && originWhere!=="deck" ) return new Error("Incorrect WHERE")
     let finished = false
     let cardToRise = this.piles[originWhere][originPileIndex].cards[cardIndex]
     this.suitStacks.forEach((stack,destinStackIndex)=>{

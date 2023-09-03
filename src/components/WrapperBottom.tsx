@@ -14,7 +14,7 @@ export default function WrapperBottom({moveSubPile,riseCardWithDoubleClick}:
       {match.pilesBottom.map((pile, i) => {
         
         return (
-          <ShowPile key={i} where={"bottom"} pileIndex={i} pile={pile} stacked={false} callbackOnDrop={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+          <ShowPile key={i} where={"bottom"} pileIndex={i} pile={pile} stacked={false} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
       )})}
 
     </div>

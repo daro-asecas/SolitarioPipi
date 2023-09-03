@@ -6,7 +6,8 @@ import ShowPile from "./ShowPile"
 import ShowDeck from "./ShowDeck"
 import ShowExtraCards from "./ShowExtraCards"
 
-export default function WrapperTop( {riseCard,riseCardWithDoubleClick,dealFunction}:{riseCard:Function,riseCardWithDoubleClick:Function,dealFunction:Function} ) {
+export default function WrapperTop( {moveSubPile,riseCardWithDoubleClick,dealFunction}:
+                        {moveSubPile:Function,riseCardWithDoubleClick:Function,dealFunction:Function} ) {
 
   const match = useContext(MatchContext)
 
@@ -14,7 +15,7 @@ export default function WrapperTop( {riseCard,riseCardWithDoubleClick,dealFuncti
     <div className="wrapper" id="wrapper-top">
 
       {match.suitStacks.map((pile, i) => { return (
-        <ShowPile key={i} where={"top"} pileIndex={i} pile={pile} stacked={true} callbackOnDrop={riseCard} riseCardWithDoubleClick={()=>{return}} />
+        <ShowPile key={i} where={"top"} pileIndex={i} pile={pile} stacked={true} moveSubPile={moveSubPile} riseCardWithDoubleClick={()=>{return}} />
       )})}
 
       { match.deck.numberOfCards > rules.NUMBER_OF_CARDS_PER_ROUND
@@ -25,7 +26,7 @@ export default function WrapperTop( {riseCard,riseCardWithDoubleClick,dealFuncti
         </>
 
         :
-          <ShowExtraCards deck={match.deck} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+          <ShowExtraCards deck={match.deck} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
       }
 
 

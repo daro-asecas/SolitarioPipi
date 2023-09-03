@@ -5,7 +5,6 @@ interface CardProps {
   card: Card;
   isSemiHidden: boolean;
   draggable: boolean;
-  risable: boolean;
   riseCardWithDoubleClick: Function
   // isVisible: boolean;
 }
@@ -14,12 +13,13 @@ export default class ShowCard extends React.Component<CardProps, {}> {
     public static defaultProps = {
       isSemiHidden: "false",
       draggable: "false",
-      risable: "false",
     };
   static this: any;
 
 
     public render(): JSX.Element {
+
+      const classDraggable = this.props.draggable?"draggable":"not-draggable"
 
 // TODO ESTO ES PARA LA VISIBILIDAD AL HACER CLIC DERECHO
       // // const [isVisible, setIsVisible] = useState(false)
@@ -30,9 +30,9 @@ export default class ShowCard extends React.Component<CardProps, {}> {
       };
 
       const handleDoubleClick =  () => {
+        if (!this.props.draggable) return
         this.props.riseCardWithDoubleClick()
       }
-
       
 
       const exists = ( this.props.card && this.props.card.suit && this.props.card.value )
@@ -41,7 +41,7 @@ export default class ShowCard extends React.Component<CardProps, {}> {
           return (
             <div 
               // className={`card ${this.props.card.color} ${isVisible?"full-visible":""}`}
-              className={`card ${this.props.card.color}`}
+              className={`card ${this.props.card.color} ${classDraggable}`}
               data-value={this.props.card.value}
               data-suit={this.props.card.suit}
               onAuxClick={handleAuxClick}
@@ -52,7 +52,7 @@ export default class ShowCard extends React.Component<CardProps, {}> {
           );
         } else if (exists) {
           return (
-            <div className={`card-back${this.props.isSemiHidden?" semi-hidden":""}`} />
+            <div className={`card-back${this.props.isSemiHidden?" semi-hidden not-draggable":""}`} />
           );
         } else {
           return (

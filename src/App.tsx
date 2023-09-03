@@ -4,10 +4,11 @@ import { Deck } from './models/deck';
 import Match, {MatchBlank} from './models/match';
 import MatchWrapper from "./components/MatchWrapper"
 import DealButton from './components/DealButton';
-import PointerProvider from './components/PointerPositionContext';
+import PilesPositionProvider from './components/PilesPositionContext';
+// import PointerProvider from './components/PointerPositionContext';
 
 export const MatchContext = React.createContext<Match>(MatchBlank)
-export const PointerContext = React.createContext<{}>({x:0, y:0})
+// export const PointerContext = React.createContext<{}>({x:0, y:0})
 
 export default function App() {
 
@@ -38,36 +39,40 @@ export default function App() {
     deal()
     renderMatch()
   }
-  
+
   function deal () {
     if (match) match.deal()
     renderMatch()
   }
-  
-  function riseCard (originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinStackIndex:number) {
-  // eslint-disable-next-line
-    if (quantityOfCards != 1) return
-    match.riseCard(originWhere, originPileIndex, cardIndex, destinStackIndex)
+
+  function moveSubPile (originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinWhere:string, destinPileIndex:number) {
+    if (destinWhere==="top") {
+      console.log("entra en: moveSubPile.TOP")
+      if (quantityOfCards!=1) return
+      match.riseCard(originWhere, originPileIndex, cardIndex, destinPileIndex)
+    } else if (destinWhere==="bottom") {
+      console.log("entra en: moveSubPile.BOTTOM")
+      match.moveSubPile(originWhere, originPileIndex, cardIndex, quantityOfCards, destinPileIndex)
+    } else {
+      console.error("Wrong destinWhere: ",destinWhere)
+    }
     renderMatch()
   }
 
   function riseCardWithDoubleClick (originWhere:string, originPileIndex:number, cardIndex:number) {
     match.riseCardWithDoubleClick(originWhere, originPileIndex, cardIndex)
     renderMatch()
-  } 
-
-  function moveSubPile (originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinPileIndex:number) {
-    match.moveSubPile(originWhere, originPileIndex, cardIndex, (quantityOfCards), destinPileIndex)
-    renderMatch()
   }
+
 
   return (
     <>
-      <PointerProvider>
+      {/* <PointerProvider> */}
+      <PilesPositionProvider>
         <MatchContext.Provider value={match}>
 
           { (isMatchStarted)
-            ? <MatchWrapper deal={deal} startGame={startGame} moveSubPile={moveSubPile} riseCard={riseCard} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+            ? <MatchWrapper deal={deal} startGame={startGame} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
             : <DealButton text={"Start!"} callback={startGame} />
           }
 
@@ -76,7 +81,8 @@ export default function App() {
     */}
 
         </MatchContext.Provider>
-      </PointerProvider>
+      </PilesPositionProvider>
+      {/* </PointerProvider> */}
     </>
   );
 }

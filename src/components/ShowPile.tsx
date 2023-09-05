@@ -1,28 +1,26 @@
-import { useState, useContext, useRef, useEffect } from 'react';
-import { MatchContext } from '../App';
-import { Deck } from "../models/deck";
-import ShowGroupedCards from "./ShowGroupedCards";
-import { UsePilesPositionUpdate } from "./PilesPositionContext";
+import { useState, useContext, useRef, useEffect } from 'react'
+import { MatchContext } from '../App'
+import { Deck } from '../models/deck'
+import ShowGroupedCards from './ShowGroupedCards'
+import { UsePilesPositionUpdate } from './PilesPositionContext'
 
-
-export default function ShowPile( {where, pileIndex, pile, stacked, moveSubPile, riseCardWithDoubleClick}:
-                  {where:string, pileIndex:number, pile:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function} ) {
-
+export default function ShowPile ({ where, pileIndex, pile, stacked, moveSubPile, riseCardWithDoubleClick }:
+                  {where:string, pileIndex:number, pile:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function}) {
   const match = useContext(MatchContext)
   const updatePosition = UsePilesPositionUpdate()
 
-  const pileElement = useRef<HTMLDivElement>(null);
+  const pileElement = useRef<HTMLDivElement>(null)
   // const [positionX, setPositionX] = useState<number>(0);
   // const [positionWidth, setPositionWidth] = useState<number>(0);
   // const [centerX, setCenterX] = useState<number>(0);
   // const [positionY, setPositionY] = useState<number>(0);
   // const [positionHeight, setPositionHeight] = useState<number>(0);
 
-  const pileToRender = (pile.numberOfCards>2&&stacked)?new Deck([pile.cards[pile.numberOfCards-2],pile.lastCard]):pile
+  const pileToRender = (pile.numberOfCards > 2 && stacked) ? new Deck([pile.cards[pile.numberOfCards - 2], pile.lastCard]) : pile
   const idName = `${where}-pile-slot-${pileIndex}`
-  const classEmpty = (pile.hasCards)?"":"empty"
+  const classEmpty = (pile.hasCards) ? '' : 'empty'
 
-  const [classOnDragOver, setClassOnDragOver] = useState("")
+  const [classOnDragOver, setClassOnDragOver] = useState('')
 
   const getPosition = () => {
     const centerX = (pileElement.current?.offsetLeft || 0) + (pileElement.current?.offsetWidth || 0) / 2
@@ -35,10 +33,10 @@ export default function ShowPile( {where, pileIndex, pile, stacked, moveSubPile,
   }
 
   useEffect(() => {
-    window.addEventListener("resize", getPosition);
-    getPosition();
-    return () => window.removeEventListener("resize", getPosition);
-  }, []);
+    window.addEventListener('resize', getPosition)
+    getPosition()
+    return () => window.removeEventListener('resize', getPosition)
+  }, [])
 
   /* HANDLES FOR DRAGOVER & DROP
   // function handleDrop (e: React.DragEvent) {
@@ -78,15 +76,10 @@ export default function ShowPile( {where, pileIndex, pile, stacked, moveSubPile,
     // onDragLeave={handleDragOverEnd}
     >
       { pileToRender
-        ?<ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={0} group={pileToRender} stacked={stacked} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
-        :<div className="card-slot-empty dragging-over-glow" />
+        ? <ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={0} group={pileToRender} stacked={stacked} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+        : <div className="card-slot-empty dragging-over-glow" />
       }
 
     </div>
-  );
+  )
 }
-
-
-
-
-

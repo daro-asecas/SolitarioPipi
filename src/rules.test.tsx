@@ -1,5 +1,5 @@
-import { rules } from './models/rules';
-import { Deck, Card } from './models/deck';
+import { rules } from './models/rules'
+import { Deck, Card } from './models/deck'
 
 // const SUITS = ["♠", "♣", "♥", "♦"]
 // const VALUE = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
@@ -15,8 +15,8 @@ import { Deck, Card } from './models/deck';
 // const card4H = new Card({"♥", "4"})
 
 test('rules.areStackableAonB', () => {
-    // expect(rules.areGroupableAonB(card1S,card2H)).toBe(true)
-    // expect(rules.areGroupableAonB(card1S,card2H)).toBe(true)
-    // expect(rules.areGroupableAonB(card1S,card2H)).toBe(true)
-    // expect(rules.areGroupableAonB(card1S,card2H)).toBe(true)
-});
+  // expect(rules.areGroupableAonB(card1S,card2H)).toBe(true)
+  // expect(rules.areGroupableAonB(card1S,card2H)).toBe(true)
+  // expect(rules.areGroupableAonB(card1S,card2H)).toBe(true)
+  // expect(rules.areGroupableAonB(card1S,card2H)).toBe(true)
+})

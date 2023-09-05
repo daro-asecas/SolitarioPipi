@@ -1,13 +1,11 @@
-import { useContext } from 'react';
-import { MatchContext } from '../App';
+import { useContext } from 'react'
+import { MatchContext } from '../App'
 
-import WrapperTop from "./WrapperTop"
-import WrapperBottom from "./WrapperBottom"
+import WrapperTop from './WrapperTop'
+import WrapperBottom from './WrapperBottom'
 
-
-export default function MatchWrapper( {moveSubPile,riseCardWithDoubleClick,startGame,deal}:
-                        {moveSubPile:Function,riseCardWithDoubleClick:Function,startGame:Function,deal:Function} ) {
-
+export default function MatchWrapper ({ moveSubPile, riseCardWithDoubleClick, startGame, deal }:
+                        {moveSubPile:Function, riseCardWithDoubleClick:Function, startGame:Function, deal:Function}) {
   const match = useContext(MatchContext)
 
   return (
@@ -15,5 +13,5 @@ export default function MatchWrapper( {moveSubPile,riseCardWithDoubleClick,start
       <WrapperTop dealFunction={deal} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
       <WrapperBottom moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
     </div>
-  );
+  )
 }

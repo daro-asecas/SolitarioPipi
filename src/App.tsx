@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import './styles/styles.css';
-import { Deck } from './models/deck';
-import Match, {MatchBlank} from './models/match';
-import MatchWrapper from "./components/MatchWrapper"
-import DealButton from './components/DealButton';
-import PilesPositionProvider from './components/PilesPositionContext';
+import React, { useState } from 'react'
+import './styles/styles.css'
+import { Deck } from './models/deck'
+import Match, { MatchBlank } from './models/match'
+import MatchWrapper from './components/MatchWrapper'
+import DealButton from './components/DealButton'
+import PilesPositionProvider from './components/PilesPositionContext'
 // import PointerProvider from './components/PointerPositionContext';
 
 export const MatchContext = React.createContext<Match>(MatchBlank)
 // export const PointerContext = React.createContext<{}>({x:0, y:0})
 
-export default function App() {
-
-  const [match, setMatch] = useState<Match>(new Match(undefined));
-  const [isMatchStarted, setIsMatchStarted] = useState(false);
+export default function App () {
+  const [match, setMatch] = useState<Match>(new Match(undefined))
+  const [isMatchStarted, setIsMatchStarted] = useState(false)
   // eslint-disable-next-line
   const [suitStacks, setSuitStacks] = useState<Deck[]>();
   // eslint-disable-next-line
@@ -46,15 +45,15 @@ export default function App() {
   }
 
   function moveSubPile (originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinWhere:string, destinPileIndex:number) {
-    if (destinWhere==="top") {
-      console.log("entra en: moveSubPile.TOP")
-      if (quantityOfCards!=1) return
+    if (destinWhere === 'top') {
+      console.log('entra en: moveSubPile.TOP')
+      if (quantityOfCards !== 1) return
       match.riseCard(originWhere, originPileIndex, cardIndex, destinPileIndex)
-    } else if (destinWhere==="bottom") {
-      console.log("entra en: moveSubPile.BOTTOM")
+    } else if (destinWhere === 'bottom') {
+      console.log('entra en: moveSubPile.BOTTOM')
       match.moveSubPile(originWhere, originPileIndex, cardIndex, quantityOfCards, destinPileIndex)
     } else {
-      console.error("Wrong destinWhere: ",destinWhere)
+      console.error('Wrong destinWhere: ', destinWhere)
     }
     renderMatch()
   }
@@ -64,7 +63,6 @@ export default function App() {
     renderMatch()
   }
 
-
   return (
     <>
       {/* <PointerProvider> */}
@@ -73,10 +71,9 @@ export default function App() {
 
           { (isMatchStarted)
             ? <MatchWrapper deal={deal} startGame={startGame} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
-            : <DealButton text={"Start!"} callback={startGame} />
-          }
+            : <DealButton text="Start!" callback={startGame} />}
 
-    {/* PARA USAR EN DEV
+          {/* PARA USAR EN DEV
           <DealButton text={"logMatch"} callback={consoleLogMatch} />
     */}
 
@@ -84,5 +81,5 @@ export default function App() {
       </PilesPositionProvider>
       {/* </PointerProvider> */}
     </>
-  );
+  )
 }

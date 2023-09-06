@@ -4,30 +4,29 @@ import { Deck } from '../models/deck'
 import ShowGroupedCards from './ShowGroupedCards'
 import { UsePilesPositionUpdate } from './PilesPositionContext'
 
-export default function ShowPile ({ where, pileIndex, pile, stacked, moveSubPile, riseCardWithDoubleClick }:
-                  {where:string, pileIndex:number, pile:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function}) {
+export default function ShowPile(
+  // prettier-ignore
+  {where, pileIndex, pile, stacked, moveSubPile, riseCardWithDoubleClick}:
+  // prettier-ignore
+  {where:string, pileIndex:number, pile:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function},
+) {
   const match = useContext(MatchContext)
   const updatePosition = UsePilesPositionUpdate()
-
   const pileElement = useRef<HTMLDivElement>(null)
-  // const [positionX, setPositionX] = useState<number>(0);
-  // const [positionWidth, setPositionWidth] = useState<number>(0);
-  // const [centerX, setCenterX] = useState<number>(0);
-  // const [positionY, setPositionY] = useState<number>(0);
-  // const [positionHeight, setPositionHeight] = useState<number>(0);
 
-  const pileToRender = (pile.numberOfCards > 2 && stacked) ? new Deck([pile.cards[pile.numberOfCards - 2], pile.lastCard]) : pile
+  const pileToRender =
+    pile.numberOfCards > 2 && stacked
+      ? new Deck([pile.cards[pile.numberOfCards - 2], pile.lastCard])
+      : pile
   const idName = `${where}-pile-slot-${pileIndex}`
-  const classEmpty = (pile.hasCards) ? '' : 'empty'
+  const classEmpty = pile.hasCards ? '' : ' empty'
 
   const [classOnDragOver, setClassOnDragOver] = useState('')
 
   const getPosition = () => {
-    const centerX = (pileElement.current?.offsetLeft || 0) + (pileElement.current?.offsetWidth || 0) / 2
+    const centerX =
+      (pileElement.current?.offsetLeft || 0) + (pileElement.current?.offsetWidth || 0) / 2
     const positionY = pileElement.current?.offsetTop || 0
-    // setCenterX( (pileElement.current?.offsetLeft || 0) + (pileElement.current?.offsetWidth || 0) / 2 )
-    // setPositionY(pileElement.current?.offsetTop || 0)
-    // setPositionHeight(pileElement.current?.offsetHeight || 0)
 
     updatePosition(where, pileIndex, centerX, positionY)
   }
@@ -51,14 +50,14 @@ export default function ShowPile ({ where, pileIndex, pile, stacked, moveSubPile
 
   // function handleDragOverStart (e: React.DragEvent) {
   //   if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
-  //   setClassOnDragOver("on-drag-over")
+  //   setClassOnDragOver(" on-drag-over")
   // }
 
   // function handleDragOver (e: React.DragEvent) {
   //   e.stopPropagation()
   //   e.preventDefault()
   //   if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
-  //   setClassOnDragOver("on-drag-over")
+  //   setClassOnDragOver(" on-drag-over")
   // }
 
   // function handleDragOverEnd (e: React.DragEvent) {
@@ -66,15 +65,8 @@ export default function ShowPile ({ where, pileIndex, pile, stacked, moveSubPile
   // } */
 
   return (
-    <div
-    id={idName}
-    className={`pile-slot ${where} ${classEmpty} ${classOnDragOver}`}
-    ref={pileElement}
-    // onDrop={handleDrop}
-    // onDragEnter={handleDragOverStart}
-    // onDragOver={handleDragOver}
-    // onDragLeave={handleDragOverEnd}
-    >
+    // prettier-ignore
+    <div id={idName} className={`pile-slot ${where}${classEmpty}${classOnDragOver}`} ref={pileElement} >
       { pileToRender
         ? <ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={0} group={pileToRender} stacked={stacked} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
         : <div className="card-slot-empty dragging-over-glow" />

@@ -1,23 +1,71 @@
-import { rules } from "./rules"
+import { rules } from './rules'
 
-const SUITS = ["♠", "♣", "♥", "♦"]
-const VALUE = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+const SUITS = ['♠', '♣', '♥', '♦']
+const VALUE = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 // const VALUE = ["A", "2", "3"]
 // const CARD_NUMBER_MAP = {"A": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9":9, "10": 10, "J": 11, "Q": 12, "K": 13}
 
 function freshDeck() {
-  return SUITS.flatMap(suit   => {
+  return SUITS.flatMap(suit => {
     return VALUE.map(value => {
       return new Card(suit, value)
     })
   })
 }
 
+export class Card {
+  suit: string
+  value: string
+  isShowingFace: boolean
+
+  constructor(suit: string, value: string, isShowingFace: boolean = false) {
+    this.suit = suit
+    this.value = value
+    this.isShowingFace = isShowingFace
+  }
+
+  get color() {
+    if (this.suit === '♥' || this.suit === '♦') {
+      return 'red'
+    } else {
+      return 'black'
+    }
+  }
+
+  get numericValue() {
+    if (this.value === 'K') return 13
+    if (this.value === 'Q') return 12
+    if (this.value === 'J') return 11
+    if (this.value === 'A') return 1
+    return Number(this.value)
+    //  return CARD_NUMBER_MAP[this.value]
+  }
+
+  get isNotShowingFace() {
+    return !this.isShowingFace
+  }
+
+  turn() {
+    this.isShowingFace = !this.isShowingFace
+    return this
+  }
+
+  turnUp() {
+    if (!this) return
+    this.isShowingFace = true
+    return this
+  }
+
+  isDropableOnB(pile: Deck) {
+    return rules.isDropableAonB(this, pile.lastCard)
+  }
+}
+
 export class Deck {
   cards: Card[]
 
   constructor(deck: Card[] | Deck = freshDeck()) {
-    this.cards = (deck instanceof Deck)?[...deck.cards]:[...deck]
+    this.cards = deck instanceof Deck ? [...deck.cards] : [...deck]
   }
 
   get numberOfCards() {
@@ -33,10 +81,10 @@ export class Deck {
   }
 
   get lastCard() {
-    return this.cards[this.numberOfCards-1]
+    return this.cards[this.numberOfCards - 1]
   }
 
-  get copy () {
+  get copy() {
     return new Deck([...this.cards])
   }
 
@@ -44,8 +92,9 @@ export class Deck {
     return this.hasCards && rules.isDraggable(this)
   }
 
-  isDropableOnB (pile: Deck) {
-    if (!this.isDraggable) console.error(new Error("Consulting DROPABILITY of a non-draggable pile"))
+  isDropableOnB(pile: Deck) {
+    if (!this.isDraggable)
+      console.error(new Error('Consulting DROPABILITY of a non-draggable pile'))
     return rules.isDropableAonB(this.firstCard, pile.lastCard)
   }
 
@@ -58,7 +107,7 @@ export class Deck {
     return this.cards.splice(index, 1)[0]
   }
 
-  extractSubPile(index:number, quantity:number) {
+  extractSubPile(index: number, quantity: number) {
     // if (this.cards.length===) return this.cards.splice(index,1)[0]
     return new Deck(this.cards.splice(index, quantity))
   }
@@ -67,16 +116,18 @@ export class Deck {
     if (this.cards.length) return this.cards.splice(-1)[0]
   }
 
-  extractSubpileOfLast(quantityOfCards:number) {
+  extractSubpileOfLast(quantityOfCards: number) {
     return new Deck(this.cards.splice(-quantityOfCards))
   }
 
-  turnUpLastCard () {
+  turnUpLastCard() {
     if (this.hasCards) this.lastCard.isShowingFace = true
   }
 
-  push(card?: Card, isShowingFace:boolean=false) {
-    if (card) {this.cards.push(card)}
+  push(card?: Card, isShowingFace: boolean = false) {
+    if (card) {
+      this.cards.push(card)
+    }
     return this
   }
 
@@ -88,7 +139,9 @@ export class Deck {
   }
 
   turnUpAll() {
-    this.cards.forEach(card => {card.turnUp()})
+    this.cards.forEach(card => {
+      card.turnUp()
+    })
     return this
   }
 
@@ -101,51 +154,4 @@ export class Deck {
     }
     return this
   }
-
-
-
-}
-
-export class Card {
-  suit: string
-  value: string
-  isShowingFace: boolean
-
-  constructor(suit: string, value: string, isShowingFace:boolean=false) {
-    this.suit = suit
-    this.value = value
-    this.isShowingFace = isShowingFace
-  }
-
-  get color() {
-    if (this.suit==="♥" || this.suit==="♦") {return "red"}
-    else {return "black"}
-  }
-
-  get numericValue() {
-    if (this.value==="K") return 13
-    if (this.value==="Q") return 12
-    if (this.value==="J") return 11
-    if (this.value==="A") return 1
-    return Number(this.value)
-  //  return CARD_NUMBER_MAP[this.value]
-  }
-
-  get isNotShowingFace() { return !this.isShowingFace}
-
-  turn() {
-    this.isShowingFace = !this.isShowingFace
-    return this
-  }
-
-  turnUp() {
-    if (!this) return
-    this.isShowingFace = true
-    return this
-  }
-
-  isDropableOnB (pile: Deck) {
-    return rules.isDropableAonB(this, pile.lastCard)
-  }
-
 }

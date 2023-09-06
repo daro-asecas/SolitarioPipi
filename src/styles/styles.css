@@ -1,11 +1,12 @@
-@import "./variables.css";
-@import "./layout.css";
+@import './variables.css';
+@import './layout.css';
 
 * {
   box-sizing: border-box;
 }
 
-#root, #wrapper-match {
+#root,
+#wrapper-match {
   width: 100vw;
   height: 100vh;
   background-color: green;
@@ -49,7 +50,7 @@ button {
   background: chocolate;
   color: black;
   border: solid 3px black;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
   /* font-weight: bold; */
   text-align: center;
   vertical-align: middle;
@@ -102,7 +103,7 @@ button:active {
 .card-group {
   display: flex;
   flex-direction: column;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   transition: transform 0s !important;
 }
 
@@ -117,7 +118,7 @@ button:active {
 }
 
 .card-group.stacked :nth-child(2):not(.dragging-over-glow) {
-  margin-block-start: calc(var(--card-height)*-1);
+  margin-block-start: calc(var(--card-height) * -1);
 }
 
 /* .card-slot.semi-hidden {
@@ -127,7 +128,11 @@ button:active {
   border: 0;
 } */
 
-.suit-slot, .pile-slot, .card-back, .card, .card-slot-placeholder {
+.suit-slot,
+.pile-slot,
+.card-back,
+.card,
+.card-slot-placeholder {
   position: relative;
   height: var(--card-height);
   width: var(--card-width);
@@ -140,7 +145,8 @@ button:active {
   margin-top: -1px;
 }
 
-.card-slot, .card-slot-placeholder {
+.card-slot,
+.card-slot-placeholder {
   border: 0;
 }
 
@@ -153,37 +159,68 @@ button:active {
   justify-content: center;
   align-items: center;
   font-size: 3rem;
-  background-image:
-  repeating-linear-gradient(135deg,
-      black 2px, black 4px,
-      transparent 4px, transparent 6px,
-      black 6px, black 8px,
-      transparent 8px, transparent 10px,
-      black 10px, black 12px,
-      transparent 12px, transparent 14px,
-      black 14px, black 16px,
-      transparent 16px, transparent 18px,
-      black 18px, black 19px,
-      transparent 19px, transparent 21px,
-      black 21px, black 23px,
-      transparent 23px, transparent 25px,
-      black 25px, black 26px,
-      transparent 26px, transparent 28px),
-  repeating-linear-gradient(45deg,
-    rgba(48, 103, 253) 2px, rgba(48, 103, 253) 4px,
-    white 4px,white 6px,
-    rgba(48, 103, 253) 6px,rgba(48, 103, 253) 8px,
-    white 8px, white 10px,
-    rgba(48, 103, 253) 10px, rgba(48, 103, 253) 12px,
-    white 12px, white 14px,
-    rgba(48, 103, 253) 14px, rgba(48, 103, 253) 16px,
-    white 16px, white 18px,
-    rgba(48, 103, 253) 18px, rgba(48, 103, 253) 19px,
-    white 19px, white 21px,
-    rgba(48, 103, 253) 21px, rgba(48, 103, 253) 23px,
-    white 23px, white 25px,
-    rgba(48, 103, 253) 25px, rgba(48, 103, 253) 26px,
-    white 26px, white 28px);
+  background-image: repeating-linear-gradient(
+      135deg,
+      black 2px,
+      black 4px,
+      transparent 4px,
+      transparent 6px,
+      black 6px,
+      black 8px,
+      transparent 8px,
+      transparent 10px,
+      black 10px,
+      black 12px,
+      transparent 12px,
+      transparent 14px,
+      black 14px,
+      black 16px,
+      transparent 16px,
+      transparent 18px,
+      black 18px,
+      black 19px,
+      transparent 19px,
+      transparent 21px,
+      black 21px,
+      black 23px,
+      transparent 23px,
+      transparent 25px,
+      black 25px,
+      black 26px,
+      transparent 26px,
+      transparent 28px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(48, 103, 253) 2px,
+      rgba(48, 103, 253) 4px,
+      white 4px,
+      white 6px,
+      rgba(48, 103, 253) 6px,
+      rgba(48, 103, 253) 8px,
+      white 8px,
+      white 10px,
+      rgba(48, 103, 253) 10px,
+      rgba(48, 103, 253) 12px,
+      white 12px,
+      white 14px,
+      rgba(48, 103, 253) 14px,
+      rgba(48, 103, 253) 16px,
+      white 16px,
+      white 18px,
+      rgba(48, 103, 253) 18px,
+      rgba(48, 103, 253) 19px,
+      white 19px,
+      white 21px,
+      rgba(48, 103, 253) 21px,
+      rgba(48, 103, 253) 23px,
+      white 23px,
+      white 25px,
+      rgba(48, 103, 253) 25px,
+      rgba(48, 103, 253) 26px,
+      white 26px,
+      white 28px
+    );
   color: white;
   font-weight: bold;
   -webkit-text-stroke: 1px black;
@@ -199,9 +236,10 @@ button:active {
   align-items: center;
   font-size: 400%;
   color: black;
-  text-shadow:  1px 1px 0.1rem rgb(255 255 255 / 75%),
-                2px 0px 0.1rem rgb(255 255 255 / 40%),
-                0px 2px 0.1rem rgb(255 255 255 / 40%);
+  text-shadow:
+    1px 1px 0.1rem rgb(255 255 255 / 75%),
+    2px 0px 0.1rem rgb(255 255 255 / 40%),
+    0px 2px 0.1rem rgb(255 255 255 / 40%);
   user-select: none;
   overflow: hidden;
   transition: margin-block-start ease-in-out 0.35s;
@@ -211,12 +249,12 @@ button:active {
   transition: margin-block-start ease-in-out 0.35s;
 }
 
-.card.red{
+.card.red {
   color: crimson;
 }
 
-.card.black{
-  color:black;
+.card.black {
+  color: black;
 }
 
 .card::before,
@@ -251,11 +289,11 @@ button:active {
 
 .on-drag {
   opacity: 100%;
-  position:relative;
+  position: relative;
   z-index: 999;
   /* visibility: hidden; */
   /* scale: 1.1; */
-  transform: translate(calc(var(--dragging-X)*1px),calc(var(--dragging-Y)*1px));
+  transform: translate(calc(var(--dragging-X) * 1px), calc(var(--dragging-Y) * 1px));
 }
 
 .dragging-over-glow {
@@ -263,25 +301,25 @@ button:active {
   position: absolute;
   height: var(--card-height);
   width: var(--card-width);
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: transparent;
   box-shadow: 0;
 }
 
-.on-drag-over  {
+.on-drag-over {
   z-index: 1000;
 }
 
 .on-drag-over .dragging-over-glow {
   /* z-index: 999; */
   --glow-color: 255, 255, 145;
-  background-color: rgba(var(--glow-color), 0.25) ;
+  background-color: rgba(var(--glow-color), 0.25);
   box-shadow: 0 0 1.5rem 0.5rem rgb(var(--glow-color), 0.65);
 }
 
 .pile-slot.empty.on-drag-over {
   --glow-color: 255, 255, 145;
-  background-color: rgba(var(--glow-color), 0.4) ;
+  background-color: rgba(var(--glow-color), 0.4);
   box-shadow: 0 0 1.5rem 0.5rem rgb(var(--glow-color), 0.65);
 }
 
@@ -289,7 +327,7 @@ button:active {
   display: flex;
   flex-direction: row;
   justify-content: right;
-  width: calc(var(--card-width)*2 + var(--wrapper-gap));
+  width: calc(var(--card-width) * 2 + var(--wrapper-gap));
 }
 
 #extra-cards-wrapper .card-extra.full-size {
@@ -311,20 +349,13 @@ button:active {
 }
 
 #extra-cards-wrapper .card-extra:not(.full-size):hover {
-  flex-shrink: .5;
+  flex-shrink: 0.5;
   flex-grow: 2;
   max-width: 2.5rem;
   min-width: 0.5rem;
 
   transition: ease-in-out 0.35s;
 }
-
-
-
-
-
-
-
 
 /*
 

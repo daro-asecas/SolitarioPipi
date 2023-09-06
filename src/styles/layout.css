@@ -2,11 +2,9 @@
   html {
     font-size: 2.8vw;
   }
-
 }
 
 @media (orientation: portrait) {
-
   html {
     font-size: 3vh;
   }
@@ -17,11 +15,8 @@
     flex-direction: column;
     justify-content: center;
   }
-  
-
 
   #game-wrapper {
     overflow: visible;
   }
-
 }

@@ -1,7 +1,7 @@
 import { Deck } from '../models/deck'
 import DealButton from './DealButton'
 
-export default function ShowDeck ({ deck, dealFunction }:{deck:Deck, dealFunction:Function}) {
+export default function ShowDeck({ deck, dealFunction }: { deck: Deck; dealFunction: Function }) {
   if (deck.hasCards) {
     return (
       <div className={'card-back'}>
@@ -9,8 +9,6 @@ export default function ShowDeck ({ deck, dealFunction }:{deck:Deck, dealFunctio
       </div>
     )
   } else {
-    return (
-      <div className={'card-slot'} />
-    )
+    return <div className={'card-slot'} />
   }
 }

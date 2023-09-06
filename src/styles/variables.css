@@ -1,20 +1,10 @@
 :root {
-
-/* Cards */
+  /* Cards */
   --card-width: 3rem;
   --card-height: 4.85rem;
   --card-border-radius: 0.35rem;
 
-
-
-
-
-
-
-
-
-
-/* Colors */
+  /* Colors */
 
   /* --bkg-color: black; */
   --bkg-color: linear-gradient(rgb(46, 42, 36), rgb(22, 21, 18) 116px);
@@ -24,10 +14,10 @@
   --form-btn-border-color: hsl(187, 100%, 87%);
   /* --form-btn-border-color: #79d7e4; */
 
-/* Borders */
+  /* Borders */
   --border-thickness-first-container: 0px;
 
-/* Corners */
+  /* Corners */
   --first-container-border-radius: 0.15rem;
   --item-border-radius: 0.3rem;
 
@@ -36,6 +26,4 @@
 
   /* Layout */
   --wrapper-gap: 0.5rem;
-  
-
 }

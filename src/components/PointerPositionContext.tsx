@@ -2,21 +2,21 @@ import React, { ReactNode, useContext, useState, useEffect } from 'react'
 
 const DraggingContext = React.createContext<{}>({})
 
-export function UseDraggingData () {
+export function UseDraggingData() {
   return useContext(DraggingContext)
 }
 
-export default function PointerProvider ({ children }:{children:ReactNode }) {
+export default function PointerProvider({ children }: { children: ReactNode }) {
   interface DraggingData {
-    isDraggingActive: boolean,
-    dropPositionX: number,
-    dropPositionY: number,
-    currentPositionX: number,
-    currentPositionY: number,
-    originWhere: string,
-    originPileIndex: number,
-    cardIndex: number,
-    quantityOfCards: number,
+    isDraggingActive: boolean
+    dropPositionX: number
+    dropPositionY: number
+    currentPositionX: number
+    currentPositionY: number
+    originWhere: string
+    originPileIndex: number
+    cardIndex: number
+    quantityOfCards: number
     destinPileIndex: number
   }
 
@@ -30,7 +30,7 @@ export default function PointerProvider ({ children }:{children:ReactNode }) {
     originPileIndex: 0,
     cardIndex: 0,
     quantityOfCards: 0,
-    destinPileIndex: 0
+    destinPileIndex: 0,
   }
 
   const [draggingData, setDraggingData] = useState<DraggingData>(emptyDraggingData)
@@ -47,13 +47,15 @@ export default function PointerProvider ({ children }:{children:ReactNode }) {
 
     window.addEventListener('mousemove', handleMouseMove)
 
-    return () => { window.removeEventListener('mousemove', handleMouseMove) }
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
   }, [])
 
   return (
     <>
       <DraggingContext.Provider value={draggingData}>
-    {draggingData.currentPositionX} {draggingData.currentPositionY}
+        {draggingData.currentPositionX} {draggingData.currentPositionY}
         {children}
       </DraggingContext.Provider>
     </>

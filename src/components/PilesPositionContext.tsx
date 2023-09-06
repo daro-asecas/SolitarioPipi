@@ -1,50 +1,36 @@
 import React, { ReactNode, useContext, useState } from 'react'
 
 interface PilesPosition {
-  top: number[],
-  bottom: number[],
+  top: number[]
+  bottom: number[]
   verticalLimit: number
 }
 
 const pilesPositionBlank = {
   top: Array(0),
   bottom: Array(0),
-  verticalLimit: 0
+  verticalLimit: 0,
 }
 
 const PilesPositionContext = React.createContext<PilesPosition>(pilesPositionBlank)
 const PilesPositionUpdateContext = React.createContext<Function>(() => {})
 
-export function UsePilesPosition () {
+export function UsePilesPosition() {
   return useContext(PilesPositionContext)
 }
 
-export function UsePilesPositionUpdate () {
+export function UsePilesPositionUpdate() {
   return useContext(PilesPositionUpdateContext)
 }
 
-export default function PilesPositionProvider ({ children }:{children:ReactNode}) {
-  // interface SinglePilePosition {
-  //   X: number
-  //   Y: number
-  // }
-
-  // interface PilesPosition { [key: string] : number }
-  // interface PilesPosition { [key: string] : SinglePilePosition[] }
-
-  // const pilesPosition = {
-  //   top:    Array(0),
-  //   bottom: Array(0),
-  //   verticalLimit: 0
-  // }
-
+export default function PilesPositionProvider({ children }: { children: ReactNode }) {
   const [pilesPosition, setPilesPosition] = useState({
     top: Array(0),
     bottom: Array(0),
-    verticalLimit: 0
+    verticalLimit: 0,
   })
 
-  const updatePosition = (where:string, pileIndex:number, X:number, Y:number) => {
+  const updatePosition = (where: string, pileIndex: number, X: number, Y: number) => {
     if (where === 'top' || where === 'bottom') {
       pilesPosition[where][pileIndex] = X
     }

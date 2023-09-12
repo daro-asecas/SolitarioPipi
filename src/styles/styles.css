@@ -241,12 +241,23 @@ button:active {
 
 @media (max-width: 300px) {
   .card {
-    font-size: 2rem;
+    font-size: 1rem;
   }
 }
 @media (max-height: 300px) {
   .card {
-    font-size: 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 200px) {
+  .card {
+    font-size: 1rem;
+  }
+}
+@media (max-height: 200px) {
+  .card {
+    font-size: 1rem;
   }
 }
 

@@ -230,15 +230,15 @@ button:active {
 
 @media (max-width: 800px) {
   .card {
-    font-size: 0.5rem;
+    font-size: 1rem;
   }
 }
 @media (max-height: 800px) {
   .card {
-    font-size: 0.5rem;
+    font-size: 1rem;
   }
 }
-@media (max-width: 500px) {
+/* @media (max-width: 500px) {
   .card {
     font-size: 0.5rem;
   }
@@ -269,7 +269,7 @@ button:active {
   .card {
     font-size: 0.5rem;
   }
-}
+} */
 
 .card:hover {
   transition: margin-block-start ease-in-out 0.35s;

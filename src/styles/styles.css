@@ -228,36 +228,46 @@ button:active {
   transition: margin-block-start ease-in-out 0.35s;
 }
 
+@media (max-width: 800px) {
+  .card {
+    font-size: 0.5rem;
+  }
+}
+@media (max-height: 800px) {
+  .card {
+    font-size: 0.5rem;
+  }
+}
 @media (max-width: 500px) {
   .card {
-    font-size: 3rem;
+    font-size: 0.5rem;
   }
 }
 @media (max-height: 500px) {
   .card {
-    font-size: 3rem;
+    font-size: 0.5rem;
   }
 }
 
 @media (max-width: 300px) {
   .card {
-    font-size: 1rem;
+    font-size: 0.5rem;
   }
 }
 @media (max-height: 300px) {
   .card {
-    font-size: 1rem;
+    font-size: 0.5rem;
   }
 }
 
 @media (max-width: 200px) {
   .card {
-    font-size: 1rem;
+    font-size: 0.5rem;
   }
 }
 @media (max-height: 200px) {
   .card {
-    font-size: 1rem;
+    font-size: 0.5rem;
   }
 }
 

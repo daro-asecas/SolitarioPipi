@@ -65,6 +65,9 @@ button.button-deal {
 #root > button {
   top: 40%;
   font-weight: bold;
+  font-size: 10vw;
+  padding: 2.25vw;
+  border-width: 1vw;
 }
 
 button:hover {
@@ -215,8 +218,6 @@ button:active {
   justify-content: center;
   align-items: center;
   font-size: var(--card-number-font-size);
-    text-size-adjust: none;
-  -webkit-text-size-adjust: none;
   color: black;
   text-shadow:
     1px 1px 0.1rem rgb(255 255 255 / 75%),
@@ -225,6 +226,17 @@ button:active {
   user-select: none;
   overflow: hidden;
   transition: margin-block-start ease-in-out 0.35s;
+}
+
+@media (max-width: 500px) {
+  .card {
+    font-size: 3rem;
+  }
+}
+@media (max-height: 500px) {
+  .card {
+    font-size: 3rem;
+  }
 }
 
 .card:hover {

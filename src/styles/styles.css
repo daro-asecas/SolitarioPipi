@@ -239,6 +239,17 @@ button:active {
   }
 }
 
+@media (max-width: 300px) {
+  .card {
+    font-size: 2rem;
+  }
+}
+@media (max-height: 300px) {
+  .card {
+    font-size: 2rem;
+  }
+}
+
 .card:hover {
   transition: margin-block-start ease-in-out 0.35s;
 }

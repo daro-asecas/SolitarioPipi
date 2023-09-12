@@ -37,6 +37,7 @@ export default function PointerProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
+      event.preventDefault()
       setDraggingData(data => {
         const updatedData = { ...data }
         data.currentPositionX = event.clientX
@@ -45,10 +46,10 @@ export default function PointerProvider({ children }: { children: ReactNode }) {
       })
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('pointermove', handleMouseMove)
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('pointermove', handleMouseMove)
     }
   }, [])
 

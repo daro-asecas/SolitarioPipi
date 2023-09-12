@@ -6,7 +6,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   display: none;
 }
 

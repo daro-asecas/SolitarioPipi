@@ -44,14 +44,8 @@ export default function App() {
     renderMatch()
   }
 
-  function moveSubPile(
-    originWhere: string,
-    originPileIndex: number,
-    cardIndex: number,
-    quantityOfCards: number,
-    destinWhere: string,
-    destinPileIndex: number,
-  ) {
+  // prettier-ignore
+  function moveSubPile(originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinWhere:string, destinPileIndex:number) {
     if (destinWhere === 'top') {
       if (quantityOfCards !== 1) return
       match.riseCard(originWhere, originPileIndex, cardIndex, destinPileIndex)
@@ -63,11 +57,8 @@ export default function App() {
     renderMatch()
   }
 
-  function riseCardWithDoubleClick(
-    originWhere: string,
-    originPileIndex: number,
-    cardIndex: number,
-  ) {
+  // prettier-ignore
+  function riseCardWithDoubleClick( originWhere:string, originPileIndex:number, cardIndex:number) {
     match.riseCardWithDoubleClick(originWhere, originPileIndex, cardIndex)
     renderMatch()
   }
@@ -89,8 +80,8 @@ export default function App() {
           )}
 
           {/* PARA USAR EN DEV
-          <DealButton text={"logMatch"} callback={consoleLogMatch} />
-    */}
+            <DealButton text={"logMatch"} callback={consoleLogMatch} />
+      */}
         </MatchContext.Provider>
       </PilesPositionProvider>
       {/* </PointerProvider> */}

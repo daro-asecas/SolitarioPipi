@@ -5,7 +5,6 @@ import ShowPile from './ShowPile'
 export default function WrapperBottom(
   // prettier-ignore
   {moveSubPile, riseCardWithDoubleClick}:
-  // prettier-ignore
   {moveSubPile:Function, riseCardWithDoubleClick:Function},
 ) {
   const match = useContext(MatchContext)

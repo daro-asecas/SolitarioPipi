@@ -6,7 +6,6 @@ import WrapperBottom from './WrapperBottom'
 export default function MatchWrapper(
   // prettier-ignore
   {moveSubPile, riseCardWithDoubleClick, startGame, deal}:
-  // prettier-ignore
   {moveSubPile:Function, riseCardWithDoubleClick:Function, startGame:Function, deal:Function},
 ) {
   const match = useContext(MatchContext)

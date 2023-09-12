@@ -7,7 +7,6 @@ import { UsePilesPositionUpdate } from './PilesPositionContext'
 export default function ShowPile(
   // prettier-ignore
   {where, pileIndex, pile, stacked, moveSubPile, riseCardWithDoubleClick}:
-  // prettier-ignore
   {where:string, pileIndex:number, pile:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function},
 ) {
   const match = useContext(MatchContext)

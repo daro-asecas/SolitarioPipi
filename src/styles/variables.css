@@ -1,8 +1,10 @@
 :root {
   /* Cards */
-  --card-width: 3rem;
-  --card-height: 4.85rem;
-  --card-border-radius: 0.35rem;
+  --card-width: 8.5vw; /* 3rem; */
+  --card-height: calc(1.618 * var(--card-width)); /* 13.753vw; /* 4.85rem; */
+  --card-border-radius: 0.85vw;
+
+  --card-number-font-size: 13vw;
 
   /* Colors */
 
@@ -14,16 +16,6 @@
   --form-btn-border-color: hsl(187, 100%, 87%);
   /* --form-btn-border-color: #79d7e4; */
 
-  /* Borders */
-  --border-thickness-first-container: 0px;
-
-  /* Corners */
-  --first-container-border-radius: 0.15rem;
-  --item-border-radius: 0.3rem;
-
-  /* Padding */
-  --containers-gap: 1.5rem;
-
   /* Layout */
-  --wrapper-gap: 0.5rem;
+  --wrapper-gap: 1.25vw;
 }

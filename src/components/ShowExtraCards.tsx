@@ -4,7 +4,6 @@ import ShowGroupedCards from './ShowGroupedCards'
 export default function ShowExtraCards(
   // prettier-ignore
   {deck,moveSubPile,riseCardWithDoubleClick}:
-  // prettier-ignore
   {deck: Deck, moveSubPile: Function, riseCardWithDoubleClick: Function},
 ) {
   return (
@@ -12,12 +11,10 @@ export default function ShowExtraCards(
       {deck.hasCards ? (
         deck.cards.map((card, index) => {
           return (
-            <div
-              key={index}
-              className={`card-extra ${deck.numberOfCards - 1 === index ? 'full-size' : ''}`}
-            >
+            // prettier-ignore
+            <div key={index} className={`card-extra ${deck.numberOfCards-1===index?'full-size':''}`} >
               <ShowGroupedCards
-                where={'deck'}
+                where='deck'
                 pileIndex={0}
                 firsCardIndex={index}
                 group={new Deck([card])}

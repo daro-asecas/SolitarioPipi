@@ -8,7 +8,6 @@ import ShowExtraCards from './ShowExtraCards'
 export default function WrapperTop(
   // prettier-ignore
   {moveSubPile, riseCardWithDoubleClick, dealFunction}:
-  // prettier-ignore
   {moveSubPile:Function, riseCardWithDoubleClick:Function, dealFunction:Function},
 ) {
   const match = useContext(MatchContext)

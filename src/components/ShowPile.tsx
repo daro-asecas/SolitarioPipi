@@ -2,7 +2,7 @@ import { useState, useContext, useRef, useEffect } from 'react'
 import { MatchContext } from '../App'
 import { Deck } from '../models/deck'
 import ShowGroupedCards from './ShowGroupedCards'
-import { UsePilesPositionUpdate } from './PilesPositionContext'
+import { UsePilesPositionUpdate } from './hooks/PilesPositionContext'
 
 export default function ShowPile(
   // prettier-ignore

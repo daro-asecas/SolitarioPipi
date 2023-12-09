@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { MatchContext } from '../App'
 // import { UseDraggingData } from './PointerPositionContext';
-import { UsePilesPosition } from './PilesPositionContext'
+import { UsePilesPosition } from './hooks/PilesPositionContext'
 import { Deck } from '../models/deck'
 import { rules } from '../models/rules'
 import ShowCard from './ShowCard'

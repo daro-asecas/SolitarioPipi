@@ -4,7 +4,7 @@ import { Deck } from './models/deck'
 import Match, { MatchBlank } from './models/match'
 import MatchWrapper from './components/MatchWrapper'
 import DealButton from './components/DealButton'
-import PilesPositionProvider from './components/PilesPositionContext'
+import PilesPositionProvider from './components/hooks/PilesPositionContext'
 // import PointerProvider from './components/PointerPositionContext';
 
 export const MatchContext = React.createContext<Match>(MatchBlank)

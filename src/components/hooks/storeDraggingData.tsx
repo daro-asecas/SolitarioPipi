@@ -1,10 +1,12 @@
 import { useStore, writable } from './store'
+import { Card } from '../../models/deck'
 
 interface DraggingData {
   isDraggingActive: boolean
-  originWhere: string
+  originWhere: "top" | "bottom" | "deck" | ""
   originPileIndex: number
   cardIndex: number
+  // baseCard: Card | null
   quantityOfCards: number
   // dropPositionX: number
   // dropPositionY: number
@@ -18,6 +20,7 @@ const emptyDraggingData = {
   originWhere: '',
   originPileIndex: -1,
   cardIndex: -1,
+  // baseCard: null,
   quantityOfCards: -1,
   // dropPositionX: -1,
   // dropPositionY: -1,

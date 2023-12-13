@@ -1,6 +1,5 @@
 import { useContext, useState, useRef } from 'react'
 import { MatchContext } from '../App'
-import { usePilesPosition } from './hooks/storePilesPosition'
 import { $pointerPosition } from './hooks/storePointerPosition'
 import { updateDraggingData, resetDraggingData, $draggingData } from './hooks/storeDraggingData'
 import { Deck } from '../models/deck'
@@ -13,7 +12,6 @@ export default function ShowGroupedCards(
   {where:"top"|"bottom"|"deck", pileIndex:number, firstCardIndex:number, group:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function},
 ) {
   const match = useContext(MatchContext)
-  const pilesPosition = usePilesPosition()
 
   const groupToRender =
     group.numberOfCards > 2 && stacked
@@ -38,14 +36,6 @@ export default function ShowGroupedCards(
   const [draggingX, setDraggingX] = useState(0)
   const [draggingY, setDraggingY] = useState(0)
   let unsuscribePointerPosition: (() => void) | null = null;
-
-  const calculateClosestPile = (X: number, Y: number) => {
-    const where = Y > pilesPosition.verticalLimit ? 'bottom' : 'top'
-    const pileDistancesToClic = pilesPosition[where].map(pileX => (pileX - X) ** 2)
-    const minDistance = Math.min(...pileDistancesToClic)
-    const pileIndex = pileDistancesToClic.indexOf(minDistance)
-    return { where, pileIndex }
-  }
 
   const handleDoubleClick = () => {
     riseCardWithDoubleClick(where, pileIndex, firstCardIndex)

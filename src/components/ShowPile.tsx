@@ -1,6 +1,6 @@
 import { useState, useContext, useRef, useEffect } from 'react'
+import { rules } from '../models/rules'
 import { MatchContext } from '../App'
-import { updatePilesPosition } from './hooks/storePilesPosition'
 import { $draggingData } from './hooks/storeDraggingData'
 import { Deck } from '../models/deck'
 import ShowGroupedCards from './ShowGroupedCards'
@@ -20,28 +20,15 @@ export default function ShowPile(
   const idName = `${where}-pile-slot-${pileIndex}`
   const classEmpty = pile.hasCards ? '' : ' empty'
 
-  const [isBeingDraggedOver, setIsBeingDraggedOver] = useState(false);
-  const classOnDragOver = isBeingDraggedOver ? " on-drag-over" : "";
+  const [isBeingDraggedOver, setIsBeingDraggedOver] = useState("");
+  const classOnDragOver = isBeingDraggedOver ? ` on-drag-over drop-${isBeingDraggedOver}` : "";
 
-  const getPosition = () => {
-    const centerX =
-      (pileElement.current?.offsetLeft || 0) + (pileElement.current?.offsetWidth || 0) / 2
-    const positionY = pileElement.current?.offsetTop || 0
-
-    updatePilesPosition(where, pileIndex, centerX, positionY)
-  }
-
-  // useEffect(() => {
-  //   window.addEventListener('resize', getPosition)
-  //   getPosition()
-  //   return () => window.removeEventListener('resize', getPosition)
-  // }, [])
 
   // HANDLES FOR DRAGOVER & DROP
   function handleDrop (e: React.PointerEvent) {
 
     const {isDraggingActive,originWhere,originPileIndex,cardIndex,quantityOfCards} = $draggingData.get()
-    setIsBeingDraggedOver(false)
+    setIsBeingDraggedOver("")
     if (!isDraggingActive) return
 
     // let originPileIndex = $draggingData.originPileIndex
@@ -59,13 +46,7 @@ export default function ShowPile(
   }
 
   function handleDragOverStart (e: React.PointerEvent) {
-    e.stopPropagation()
-    e.preventDefault()
-    const {isDraggingActive,originWhere,originPileIndex,cardIndex,quantityOfCards} = $draggingData.get()
-    if (!isDraggingActive) return
-    if ( originWhere===where && originPileIndex===pileIndex ) return
-
-    setIsBeingDraggedOver(true)
+    handleDragOver(e) // por si se requieren hacer cosas distintas, por el momento ambas son iguales.
   }
 
   function handleDragOver (e: React.PointerEvent) {
@@ -73,12 +54,31 @@ export default function ShowPile(
     e.preventDefault()
     const {isDraggingActive,originWhere,originPileIndex,cardIndex,quantityOfCards} = $draggingData.get()
 
+    if (originWhere === "") return
+    if (!isDraggingActive) return
     if ( originWhere===where && originPileIndex===pileIndex ) return
-    setIsBeingDraggedOver(true)
+    
+    // const draggedGroupBaseCard = match.piles[originWhere][originPileIndex].cards[cardIndex]
+    const draggedGroupBaseCard = match.piles.bottom[originPileIndex].cards[cardIndex]
+
+    console.log(draggedGroupBaseCard)
+    console.log(pile.lastCard)
+    console.log(rules.isRisableAonB(draggedGroupBaseCard, pile.lastCard))
+    console.log(rules.isDropableAonB(draggedGroupBaseCard, pile.lastCard))
+    
+    if (
+      where==="top" && quantityOfCards===1 && rules.isRisableAonB(draggedGroupBaseCard, pile.lastCard) ||
+      where==="bottom" && rules.isDropableAonB(draggedGroupBaseCard, pile.lastCard)
+    ) {
+      setIsBeingDraggedOver("allowed")
+    } else {
+      setIsBeingDraggedOver("disabled")
+    }
+
   }
 
   function handleDragOverEnd (e: React.PointerEvent) {
-    setIsBeingDraggedOver(false)
+    setIsBeingDraggedOver("")
   }
 
   return (

@@ -16,7 +16,7 @@ export default function ShowExtraCards(
               <ShowGroupedCards
                 where='deck'
                 pileIndex={0}
-                firsCardIndex={index}
+                firstCardIndex={index}
                 group={new Deck([card])}
                 stacked={false}
                 moveSubPile={moveSubPile}

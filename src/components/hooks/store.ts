@@ -1,8 +1,5 @@
 import { run_all } from "./fn";
-import { mods } from "./mods";
-const { useEffect, useState } = mods["react"]; 
-
-export type Store<T> = ReturnType<typeof writable<T>>;
+import { useEffect, useState } from "react"; 
 
 export type Readable<T> = {
   get: () => T;
@@ -11,6 +8,7 @@ export type Readable<T> = {
 
 export type Writable<T> = Readable<T> & {
   set: (value: T) => void;
+  invalidate: () => void;
 }
 
 export const writable = <T>(start_value: T): Writable<T> => {
@@ -32,12 +30,16 @@ export const writable = <T>(start_value: T): Writable<T> => {
   const set = (new_value: T) => {
     if(value === new_value) return;
     value = new_value;
-    for(const { fn } of subs) fn(value);
+    invalidate();
   }
 
   const get = () => value;
 
-  return { get, set, subscribe };
+  const invalidate = () => {
+    for(const { fn } of subs) fn(value);
+  }
+
+  return { get, set, invalidate, subscribe };
 }
 
 /** One or more `Readable`s. */

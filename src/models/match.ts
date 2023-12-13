@@ -16,10 +16,10 @@ function emptyPilesArray(number: number) {
 }
 
 export interface MatchInterface {
-  // deck:        Deck
   initialDeck: Deck
   piles: { deck: Deck[]; top: Deck[]; bottom: Deck[] }
-  //  suitStacks: Array<Deck>
+  //  deck:        Deck
+  //  suitStacks:  Array<Deck>
   //  pilesBottom: Array<Deck>
 }
 
@@ -28,7 +28,7 @@ export default class Match implements MatchInterface {
   piles: { deck: Deck[]; top: Deck[]; bottom: Deck[] }
 
   constructor(
-    match:
+    match?:
       | {
           // deck:        Deck,
           initialDeck: Deck | undefined
@@ -89,7 +89,7 @@ export default class Match implements MatchInterface {
   }
 
   riseCard(
-    originWhere: string,
+    originWhere: "top"|"bottom"|"deck",
     originPileIndex: number,
     cardIndex: number,
     destinStackIndex: number,
@@ -137,7 +137,7 @@ export default class Match implements MatchInterface {
   }
 
   moveSubPile(
-    originWhere: string,
+    originWhere: "top"|"bottom"|"deck",
     originPileIndex: number,
     cardIndex: number,
     quantityOfCards: number,
@@ -170,7 +170,7 @@ export default class Match implements MatchInterface {
   }
 }
 
-export const MatchBlank = new Match({
+export const matchBlank = () => new Match({
   initialDeck: new Deck(),
   piles: { deck: emptyPilesArray(1), top: emptyPilesArray(1), bottom: emptyPilesArray(1) },
 })

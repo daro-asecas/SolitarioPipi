@@ -1,51 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './styles/styles.css'
 import { Deck } from './models/deck'
-import Match, { MatchBlank } from './models/match'
+import Match, { matchBlank } from './models/match'
+import { usePointerPosition, $pointerPosition } from './components/hooks/storePointerPosition'
 import MatchWrapper from './components/MatchWrapper'
 import DealButton from './components/DealButton'
-import PilesPositionProvider from './components/hooks/PilesPositionContext'
-// import PointerProvider from './components/PointerPositionContext';
 
-export const MatchContext = React.createContext<Match>(MatchBlank)
-// export const PointerContext = React.createContext<{}>({x:0, y:0})
+
+export const MatchContext = React.createContext<Match>(matchBlank())
 
 export default function App() {
-  const [match, setMatch] = useState<Match>(new Match(undefined))
+  const [match, setMatch] = useState<Match>(new Match())
   const [isMatchStarted, setIsMatchStarted] = useState(false)
-  // eslint-disable-next-line
-  const [suitStacks, setSuitStacks] = useState<Deck[]>()
-  // eslint-disable-next-line
-  const [pilesBottom, setPilesBottom] = useState<Deck[]>()
-  // eslint-disable-next-line
-  const [deck, setDeck] = useState<Deck>()
 
   // function consoleLogMatch () {
   //   match.consoleLogMatch()
   // }
 
-  function renderMatch() {
-    if (match) {
-      setSuitStacks([...match.suitStacks])
-      setPilesBottom([...match.pilesBottom])
-      setDeck(new Deck(match.deck))
-    }
+  function invalidate() {
+    setMatch(m => new Match(m))
   }
 
   function startGame() {
     setMatch(new Match(match))
     setIsMatchStarted(true)
     deal()
-    renderMatch()
   }
 
   function deal() {
     if (match) match.deal()
-    renderMatch()
+    invalidate()
   }
 
   // prettier-ignore
-  function moveSubPile(originWhere:string, originPileIndex:number, cardIndex:number, quantityOfCards:number, destinWhere:string, destinPileIndex:number) {
+  function moveSubPile(originWhere:"top"|"bottom"|"deck", originPileIndex:number, cardIndex:number, quantityOfCards:number, destinWhere:string, destinPileIndex:number) {
     if (destinWhere === 'top') {
       if (quantityOfCards !== 1) return
       match.riseCard(originWhere, originPileIndex, cardIndex, destinPileIndex)
@@ -54,37 +42,56 @@ export default function App() {
     } else {
       console.error(new Error('Moving to invalid destin'))
     }
-    renderMatch()
+    invalidate()
   }
 
   // prettier-ignore
   function riseCardWithDoubleClick( originWhere:string, originPileIndex:number, cardIndex:number) {
     match.riseCardWithDoubleClick(originWhere, originPileIndex, cardIndex)
-    renderMatch()
+    invalidate()
   }
+
+  useEffect(() => {
+    const handle = (event: MouseEvent) => {
+      $pointerPosition.set({
+        x: event.x,
+        y: event.y
+      });
+      
+    };
+    window.addEventListener("pointerdown", handle, { capture: true });
+    window.addEventListener('pointermove', handle, { capture: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", handle, { capture: true });
+      window.removeEventListener('pointermove', handle, { capture: true });
+    };
+  }, []);
+
+  // const { x: pointerX, y: pointerY } = usePointerPosition();
 
   return (
     <>
-      {/* <PointerProvider> */}
-      <PilesPositionProvider>
-        <MatchContext.Provider value={match}>
-          {isMatchStarted ? (
-            <MatchWrapper
-              deal={deal}
-              startGame={startGame}
-              moveSubPile={moveSubPile}
-              riseCardWithDoubleClick={riseCardWithDoubleClick}
-            />
-          ) : (
-            <DealButton text="Start!" callback={startGame} />
-          )}
+      <MatchContext.Provider value={match}>
+        {/* {pointerX} {","} {pointerY} */}
 
-          {/* PARA USAR EN DEV
-            <DealButton text={"logMatch"} callback={consoleLogMatch} />
-      */}
-        </MatchContext.Provider>
-      </PilesPositionProvider>
-      {/* </PointerProvider> */}
+        {isMatchStarted ? (
+          <MatchWrapper
+            deal={deal}
+            startGame={startGame}
+            moveSubPile={moveSubPile}
+            riseCardWithDoubleClick={riseCardWithDoubleClick}
+          />
+        ) : (
+          <DealButton text="Start!" callback={startGame} />
+        )}
+
+        {
+          /* PARA USAR EN DEV
+          <DealButton text={"logMatch"} callback={consoleLogMatch} />
+          */
+        }
+      </MatchContext.Provider>
     </>
   )
 }

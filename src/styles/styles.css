@@ -100,8 +100,13 @@ button:active {
   margin-block-start: 0vw;
 }
 
-.card-group > .card:hover + * {
+.bottom .card-group > .card:focus + .card,
+.bottom .card-group > .card:focus + .card-group {
   margin-block-start: -2vw;
+}
+  
+.dragging-over-glow {
+  margin-block-start: 0vw;
 }
 
 .card-group.stacked :nth-child(2):not(.dragging-over-glow) {
@@ -212,7 +217,6 @@ button:active {
 
 .card {
   position: relative;
-  padding-bottom: 1.5vw;
   background-color: white;
   display: flex;
   justify-content: center;
@@ -228,48 +232,9 @@ button:active {
   transition: margin-block-start ease-in-out 0.35s;
 }
 
-@media (max-width: 800px) {
-  .card {
-    font-size: 1rem;
-  }
+.card svg {
+  flex: none;
 }
-@media (max-height: 800px) {
-  .card {
-    font-size: 1rem;
-  }
-}
-/* @media (max-width: 500px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-@media (max-height: 500px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-
-@media (max-width: 300px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-@media (max-height: 300px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-
-@media (max-width: 200px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-@media (max-height: 200px) {
-  .card {
-    font-size: 0.5rem;
-  }
-} */
 
 .card:hover {
   transition: margin-block-start ease-in-out 0.35s;
@@ -281,6 +246,14 @@ button:active {
 
 .card.black {
   color: black;
+}
+
+.card.♥ {
+  font-size: calc(var(--card-number-font-size) * 0.87);
+}
+
+.card.♣ {
+  font-size: calc(var(--card-number-font-size) * 0.95);
 }
 
 .card::before,
@@ -316,6 +289,7 @@ button:active {
 .on-drag {
   opacity: 100%;
   position: relative;
+  pointer-events: none;
   z-index: 999;
   /* visibility: hidden; */
   /* scale: 1.1; */
@@ -333,7 +307,7 @@ button:active {
 }
 
 .on-drag-over {
-  z-index: 1000;
+  z-index: 888;
 }
 
 .on-drag-over .dragging-over-glow {
@@ -386,7 +360,7 @@ button:active {
 /*
 
 selector {
-  
+
   transition-duration: 0.5s;
   animation: beating-border 1.5s cubic-bezier(.42,0,.58,1) infinite;
 

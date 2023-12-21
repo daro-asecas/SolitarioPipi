@@ -52,13 +52,16 @@ export default function App() {
   }
 
   useEffect(() => {
-    const handle = (event: MouseEvent) => {
+    const handle = (event: PointerEvent) => {
+      const {target} = event
+      // @ts-ignore
+      if (target) {target.releasePointerCapture(event.pointerId)}
       $pointerPosition.set({
         x: event.x,
         y: event.y
       });
-      
     };
+
     window.addEventListener("pointerdown", handle, { capture: true });
     window.addEventListener('pointermove', handle, { capture: true });
 

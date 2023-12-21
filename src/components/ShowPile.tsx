@@ -48,7 +48,7 @@ export default function ShowPile(
   function handleDragOverStart (e: React.PointerEvent) {
     handleDragOver(e) // por si se requieren hacer cosas distintas, por el momento ambas son iguales.
   }
-
+  
   function handleDragOver (e: React.PointerEvent) {
     e.stopPropagation()
     e.preventDefault()
@@ -61,11 +61,6 @@ export default function ShowPile(
     // const draggedGroupBaseCard = match.piles[originWhere][originPileIndex].cards[cardIndex]
     const draggedGroupBaseCard = match.piles.bottom[originPileIndex].cards[cardIndex]
 
-    console.log(draggedGroupBaseCard)
-    console.log(pile.lastCard)
-    console.log(rules.isRisableAonB(draggedGroupBaseCard, pile.lastCard))
-    console.log(rules.isDropableAonB(draggedGroupBaseCard, pile.lastCard))
-    
     if (
       where==="top" && quantityOfCards===1 && rules.isRisableAonB(draggedGroupBaseCard, pile.lastCard) ||
       where==="bottom" && rules.isDropableAonB(draggedGroupBaseCard, pile.lastCard)

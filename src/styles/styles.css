@@ -147,67 +147,69 @@ button:active {
   display: flex;
   justify-content: center;
   align-items: center;
+  --stripe-width: max(0.2vh, 1px);
+  --stripe-color: rgba(48, 125, 255);
   background-image: repeating-linear-gradient(
       135deg,
-      black 2px,
-      black 4px,
-      transparent 4px,
-      transparent 6px,
-      black 6px,
-      black 8px,
-      transparent 8px,
-      transparent 10px,
-      black 10px,
-      black 12px,
-      transparent 12px,
-      transparent 14px,
-      black 14px,
-      black 16px,
-      transparent 16px,
-      transparent 18px,
-      black 18px,
-      black 19px,
-      transparent 19px,
-      transparent 21px,
-      black 21px,
-      black 23px,
-      transparent 23px,
-      transparent 25px,
-      black 25px,
-      black 26px,
-      transparent 26px,
-      transparent 28px
+      black calc(2 * var(--stripe-width)),
+      black calc(4 * var(--stripe-width)),
+      transparent calc(4 * var(--stripe-width)),
+      transparent calc(6 * var(--stripe-width)),
+      black calc(6 * var(--stripe-width)),
+      black calc(8 * var(--stripe-width)),
+      transparent calc(8 * var(--stripe-width)),
+      transparent calc(10 * var(--stripe-width)),
+      black calc(10 * var(--stripe-width)),
+      black calc(12 * var(--stripe-width)),
+      transparent calc(12 * var(--stripe-width)),
+      transparent calc(14 * var(--stripe-width)),
+      black calc(14 * var(--stripe-width)),
+      black calc(16 * var(--stripe-width)),
+      transparent calc(16 * var(--stripe-width)),
+      transparent calc(18 * var(--stripe-width)),
+      black calc(18 * var(--stripe-width)),
+      black calc(19 * var(--stripe-width)),
+      transparent calc(19 * var(--stripe-width)),
+      transparent calc(21 * var(--stripe-width)),
+      black calc(21 * var(--stripe-width)),
+      black calc(23 * var(--stripe-width)),
+      transparent calc(23 * var(--stripe-width)),
+      transparent calc(25 * var(--stripe-width)),
+      black calc(25 * var(--stripe-width)),
+      black calc(26 * var(--stripe-width)),
+      transparent calc(26 * var(--stripe-width)),
+      transparent calc(28 * var(--stripe-width))
     ),
     repeating-linear-gradient(
       45deg,
-      rgba(48, 103, 253) 2px,
-      rgba(48, 103, 253) 4px,
-      white 4px,
-      white 6px,
-      rgba(48, 103, 253) 6px,
-      rgba(48, 103, 253) 8px,
-      white 8px,
-      white 10px,
-      rgba(48, 103, 253) 10px,
-      rgba(48, 103, 253) 12px,
-      white 12px,
-      white 14px,
-      rgba(48, 103, 253) 14px,
-      rgba(48, 103, 253) 16px,
-      white 16px,
-      white 18px,
-      rgba(48, 103, 253) 18px,
-      rgba(48, 103, 253) 19px,
-      white 19px,
-      white 21px,
-      rgba(48, 103, 253) 21px,
-      rgba(48, 103, 253) 23px,
-      white 23px,
-      white 25px,
-      rgba(48, 103, 253) 25px,
-      rgba(48, 103, 253) 26px,
-      white 26px,
-      white 28px
+      var(--stripe-color) calc(2 * var(--stripe-width)),
+      var(--stripe-color) calc(4 * var(--stripe-width)),
+      white calc(4 * var(--stripe-width)),
+      white calc(6 * var(--stripe-width)),
+      var(--stripe-color) calc(6 * var(--stripe-width)),
+      var(--stripe-color) calc(8 * var(--stripe-width)),
+      white calc(8 * var(--stripe-width)),
+      white calc(10 * var(--stripe-width)),
+      var(--stripe-color) calc(10 * var(--stripe-width)),
+      var(--stripe-color) calc(12 * var(--stripe-width)),
+      white calc(12 * var(--stripe-width)),
+      white calc(14 * var(--stripe-width)),
+      var(--stripe-color) calc(14 * var(--stripe-width)),
+      var(--stripe-color) calc(16 * var(--stripe-width)),
+      white calc(16 * var(--stripe-width)),
+      white calc(18 * var(--stripe-width)),
+      var(--stripe-color) calc(18 * var(--stripe-width)),
+      var(--stripe-color) calc(19 * var(--stripe-width)),
+      white calc(19 * var(--stripe-width)),
+      white calc(21 * var(--stripe-width)),
+      var(--stripe-color) calc(21 * var(--stripe-width)),
+      var(--stripe-color) calc(23 * var(--stripe-width)),
+      white calc(23 * var(--stripe-width)),
+      white calc(25 * var(--stripe-width)),
+      var(--stripe-color) calc(25 * var(--stripe-width)),
+      var(--stripe-color) calc(26 * var(--stripe-width)),
+      white calc(26 * var(--stripe-width)),
+      white calc(28 * var(--stripe-width))
     );
   color: white;
   font-weight: bold;
@@ -225,21 +227,22 @@ button:active {
   font-size: var(--card-number-font-size);
   color: black;
   text-shadow:
-    1px 1px 0.1rem rgb(255 255 255 / 75%),
-    2px 0px 0.1rem rgb(255 255 255 / 40%),
-    0px 2px 0.1rem rgb(255 255 255 / 40%);
+    1px 1px max(0.1rem, 1px) rgb(255 255 255 / 75%),
+    2px 0px max(0.1rem, 1px) rgb(255 255 255 / 40%),
+    0px 2px max(0.1rem, 1px) rgb(255 255 255 / 40%);
   user-select: none;
   overflow: hidden;
-  transition: margin-block-start ease-in-out 0.35s;
+  /* transition: margin-block-start ease-in-out 0.35s; */
 }
 
 .card svg {
   flex: none;
+  pointer-events: none;
 }
 
-.card:hover {
+/* .card:hover {
   transition: margin-block-start ease-in-out 0.35s;
-}
+} */
 
 .card.red {
   color: crimson;
@@ -355,7 +358,7 @@ button:active {
   width: var(--card-width);
   max-width: var(--card-width);
 
-  transition: ease-in-out 0.35s;
+  /* transition: ease-in-out 0.35s; */
 }
 
 #extra-cards-wrapper .card-extra:not(.full-size) {

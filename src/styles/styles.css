@@ -271,14 +271,14 @@ button:active {
 
 .card::before {
   --margin: max(3%, 2px);
-  top: calc(--margin * -1);
-  left: --margin;
+  top: calc(var(--margin) * -1);
+  left: var(--margin);
 }
 
 .card::after {
   --margin: max(3%, 2px);
-  bottom: calc(--margin * -1);
-  right: --margin;
+  bottom: calc(var(--margin) * -1);
+  right: var(--margin);
   transform: rotate(180deg);
 }
 

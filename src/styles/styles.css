@@ -147,7 +147,7 @@ button:active {
   display: flex;
   justify-content: center;
   align-items: center;
-  --stripe-width: max(0.2vh, 1px);
+  --stripe-width: max(0.1vh, 1px);
   --stripe-color: rgba(48, 125, 255);
   background-image: repeating-linear-gradient(
       135deg,
@@ -267,18 +267,19 @@ button:active {
   font-size: 2.5vw;
   color: black;
   font-weight: bold;
+  line-height: 0.5rem;
 }
 
 .card::before {
-  --margin: max(3%, 2px);
-  top: calc(var(--margin) * -1);
-  left: var(--margin);
+  margin-top: 1px;
+  top: 0%;
+  left: 3%;
 }
 
 .card::after {
-  --margin: max(3%, 2px);
-  bottom: calc(var(--margin) * -1);
-  right: var(--margin);
+  margin-bottom: 1px;
+  bottom: 0%;
+  right: 3%;
   transform: rotate(180deg);
 }
 

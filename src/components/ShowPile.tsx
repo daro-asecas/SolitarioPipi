@@ -1,16 +1,16 @@
 import { useState, useContext, useRef, useEffect } from 'react'
+import { rules } from '../models/rules'
 import { MatchContext } from '../App'
+import { $draggingData } from './hooks/storeDraggingData'
 import { Deck } from '../models/deck'
 import ShowGroupedCards from './ShowGroupedCards'
-import { UsePilesPositionUpdate } from './PilesPositionContext'
 
 export default function ShowPile(
   // prettier-ignore
   {where, pileIndex, pile, stacked, moveSubPile, riseCardWithDoubleClick}:
-  {where:string, pileIndex:number, pile:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function},
+  {where:"top" | "bottom" | "deck", pileIndex:number, pile:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function},
 ) {
   const match = useContext(MatchContext)
-  const updatePosition = UsePilesPositionUpdate()
   const pileElement = useRef<HTMLDivElement>(null)
 
   const pileToRender =
@@ -20,54 +20,71 @@ export default function ShowPile(
   const idName = `${where}-pile-slot-${pileIndex}`
   const classEmpty = pile.hasCards ? '' : ' empty'
 
-  const [classOnDragOver, setClassOnDragOver] = useState('')
+  const [isBeingDraggedOver, setIsBeingDraggedOver] = useState("");
+  const classOnDragOver = isBeingDraggedOver ? ` on-drag-over drop-${isBeingDraggedOver}` : "";
 
-  const getPosition = () => {
-    const centerX =
-      (pileElement.current?.offsetLeft || 0) + (pileElement.current?.offsetWidth || 0) / 2
-    const positionY = pileElement.current?.offsetTop || 0
 
-    updatePosition(where, pileIndex, centerX, positionY)
+  // HANDLES FOR DRAGOVER & DROP
+  function handleDrop (e: React.PointerEvent) {
+
+    const {isDraggingActive,originWhere,originPileIndex,cardIndex,quantityOfCards} = $draggingData.get()
+    setIsBeingDraggedOver("")
+    if (!isDraggingActive) return
+
+    // let originPileIndex = $draggingData.originPileIndex
+    // let cardIndex = e.dataTransfer.getData("cardIndex")
+    // let quantityOfCards = e.dataTransfer.getData("quantityOfCards")
+    // setTimeout(()=>callbackOnDrop(originWhere, originPileIndex, cardIndex, quantityOfCards, pileIndex), 1)
+    moveSubPile(
+      originWhere,
+      originPileIndex,
+      cardIndex,
+      quantityOfCards,
+      where,
+      pileIndex,
+    )
   }
 
-  useEffect(() => {
-    window.addEventListener('resize', getPosition)
-    getPosition()
-    return () => window.removeEventListener('resize', getPosition)
-  }, [])
+  function handleDragOverStart (e: React.PointerEvent) {
+    handleDragOver(e) // por si se requieren hacer cosas distintas, por el momento ambas son iguales.
+  }
+  
+  function handleDragOver (e: React.PointerEvent) {
+    e.stopPropagation()
+    e.preventDefault()
+    const {isDraggingActive,originWhere,originPileIndex,cardIndex,quantityOfCards} = $draggingData.get()
 
-  /* HANDLES FOR DRAGOVER & DROP
-  // function handleDrop (e: React.DragEvent) {
-  //   setClassOnDragOver("")
+    if (originWhere === "") return
+    if (!isDraggingActive) return
+    if ( originWhere===where && originPileIndex===pileIndex ) return
+    
+    // const draggedGroupBaseCard = match.piles[originWhere][originPileIndex].cards[cardIndex]
+    const draggedGroupBaseCard = match.piles.bottom[originPileIndex].cards[cardIndex]
 
-  //   let originWhere = e.dataTransfer.getData("originWhere")
-  //   let originPileIndex = e.dataTransfer.getData("originPileIndex")
-  //   let cardIndex = e.dataTransfer.getData("cardIndex")
-  //   let quantityOfCards = e.dataTransfer.getData("quantityOfCards")
-  //   setTimeout(()=>callbackOnDrop(originWhere, originPileIndex, cardIndex, quantityOfCards, pileIndex), 1)
-  // }
+    if (
+      where==="top" && quantityOfCards===1 && rules.isRisableAonB(draggedGroupBaseCard, pile.lastCard) ||
+      where==="bottom" && rules.isDropableAonB(draggedGroupBaseCard, pile.lastCard)
+    ) {
+      setIsBeingDraggedOver("allowed")
+    } else {
+      setIsBeingDraggedOver("disabled")
+    }
 
-  // function handleDragOverStart (e: React.DragEvent) {
-  //   if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
-  //   setClassOnDragOver(" on-drag-over")
-  // }
+  }
 
-  // function handleDragOver (e: React.DragEvent) {
-  //   e.stopPropagation()
-  //   e.preventDefault()
-  //   if ( e.dataTransfer.getData("originWhere")===where && e.dataTransfer.getData("originPileIndex")===`${pileIndex}` ) return
-  //   setClassOnDragOver(" on-drag-over")
-  // }
-
-  // function handleDragOverEnd (e: React.DragEvent) {
-  //   setClassOnDragOver("")
-  // } */
+  function handleDragOverEnd (e: React.PointerEvent) {
+    setIsBeingDraggedOver("")
+  }
 
   return (
     // prettier-ignore
-    <div id={idName} className={`pile-slot ${where}${classEmpty}${classOnDragOver}`} ref={pileElement} >
+    <div id={idName} className={`pile-slot ${where}${classEmpty}${classOnDragOver}`} ref={pileElement}
+      onPointerEnter={handleDragOverStart}
+      onPointerLeave={handleDragOverEnd}
+      onPointerUp={handleDrop}
+    >
       { pileToRender
-        ? <ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={0} group={pileToRender} stacked={stacked} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+        ? <ShowGroupedCards where={where} pileIndex={pileIndex} firstCardIndex={0} group={pileToRender} stacked={stacked} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
         : <div className="card-slot-empty dragging-over-glow" />
       }
 

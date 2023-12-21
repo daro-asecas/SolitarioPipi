@@ -4,7 +4,7 @@
   --card-height: calc(1.618 * var(--card-width)); /* 13.753vw; /* 4.85rem; */
   --card-border-radius: 0.85vw;
 
-  --card-number-font-size: 13vw;
+  --card-number-font-size: 10vw;
 
   /* Colors */
 

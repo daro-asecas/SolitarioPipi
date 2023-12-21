@@ -1,21 +1,17 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useRef } from 'react'
 import { MatchContext } from '../App'
-// import { UseDraggingData } from './PointerPositionContext';
-import { UsePilesPosition } from './PilesPositionContext'
+import { $pointerPosition } from './hooks/storePointerPosition'
+import { updateDraggingData, resetDraggingData, $draggingData } from './hooks/storeDraggingData'
 import { Deck } from '../models/deck'
 import { rules } from '../models/rules'
 import ShowCard from './ShowCard'
 
 export default function ShowGroupedCards(
   // prettier-ignore
-  {where, pileIndex, firsCardIndex, group, stacked, moveSubPile, riseCardWithDoubleClick}:
-  {where:string, pileIndex:number, firsCardIndex:number, group:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function},
+  {where, pileIndex, firstCardIndex, group, stacked, moveSubPile, riseCardWithDoubleClick}:
+  {where:"top"|"bottom"|"deck", pileIndex:number, firstCardIndex:number, group:Deck, stacked:boolean, moveSubPile:Function, riseCardWithDoubleClick:Function},
 ) {
   const match = useContext(MatchContext)
-  // const pointerPosition = UseDraggingData()
-  const pilesPosition = UsePilesPosition()
-
-  let lastClickTimestamp = Date.now()
 
   const groupToRender =
     group.numberOfCards > 2 && stacked
@@ -29,104 +25,94 @@ export default function ShowGroupedCards(
   // const risable = cardToRender ? rules.isRisable(cardToRender, match.suitStacks) : false
 
   const classStacked = stacked ? ' stacked' : ''
-  const classFirst = firsCardIndex === 0 ? ' first' : ''
-  const [classOnDrag, setClassOnDrag] = useState('')
-  const [draggingX, setDraggingX] = useState('0')
-  const [draggingY, setDraggingY] = useState('0')
-  const [clicked, setClicked] = useState(false)
-  const [startingX, setStartingX] = useState(0)
-  const [startingY, setStartingY] = useState(0)
+  const classFirst = firstCardIndex === 0 ? ' first' : ''
+  const [isBeingDragged, setIsBeingDragged] = useState(false);
+  const classOnDrag = isBeingDragged ? " on-drag" : "";
 
-  // let clicked = false
-  // let startingX = 0
-  // let startingY = 0
-
-  const calculateClosestPile = (X: number, Y: number) => {
-    const where = Y > pilesPosition.verticalLimit ? 'bottom' : 'top'
-    const pileDistancesToClic = pilesPosition[where].map(pileX => (pileX - X) ** 2)
-    const minDistance = Math.min(...pileDistancesToClic)
-    const pileIndex = pileDistancesToClic.indexOf(minDistance)
-    return { where, pileIndex }
-  }
+  const clicked = useRef(false)
+  const lastClickTimestamp = useRef(0)
+  const startingX = useRef(0)
+  const startingY = useRef(0)
+  const [draggingX, setDraggingX] = useState(0)
+  const [draggingY, setDraggingY] = useState(0)
+  let unsuscribePointerPosition: (() => void) | null = null;
 
   const handleDoubleClick = () => {
-    riseCardWithDoubleClick(where, pileIndex, firsCardIndex)
+    riseCardWithDoubleClick(where, pileIndex, firstCardIndex)
   }
 
-  const handleDragStart = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handleDragStart = (e: React.PointerEvent) => {
     e.stopPropagation()
-    e.preventDefault()
 
-    if (Date.now() - lastClickTimestamp < 500) {
+    if (Date.now() - lastClickTimestamp.current < 500) {
       handleDoubleClick()
       return
     } else {
-      lastClickTimestamp = Date.now()
+      lastClickTimestamp.current = Date.now()
     }
-
-    setClicked(true)
 
     if (!draggable) return
-    if (!classOnDrag) {
-      setClassOnDrag(' on-drag')
-    }
+    
+    if ($draggingData.get().isDraggingActive) return
 
-    setStartingX(e.pageX)
-    setStartingY(e.pageY)
-    // handleDragMove(e)
+    updateDraggingData({
+      isDraggingActive: true,
+      originWhere: where,
+      originPileIndex: pileIndex,
+      cardIndex: firstCardIndex,
+      quantityOfCards: group.numberOfCards,
+      // currentPositionX: 0,
+      // currentPositionY: 0,
+      // destinPileIndex: -1,
+      // dropPositionX: 0,
+      // dropPositionY: 0,
+    })
 
-    window.addEventListener('pointermove', handleDragMove)
+    clicked.current = true
+    setIsBeingDragged(true)
+
+    const { x: x0, y: y0 } = $pointerPosition.get()
+    startingX.current = x0
+    startingY.current = y0
+
+    
+    handleDragMove($pointerPosition.get());
+    unsuscribePointerPosition = $pointerPosition.subscribe(handleDragMove)
+    document.addEventListener("pointerup", handleDragEnd)
+    document.addEventListener("pointercancel", handleDragEnd)
   }
 
-  const handleDragMove = (e: React.PointerEvent<HTMLDivElement> | PointerEvent) => {
-    if (!clicked) return
-    e.preventDefault()
-    e.stopPropagation()
-    // if (!clicked) return
-
-    // const X = ('pageX' in e)? e.pageX : e.changedTouches[0].pageX
-    // const Y = ('pageY' in e)? e.pageX : e.changedTouches[0].pageY
-
-    setDraggingX(`${e.pageX - startingX}`)
-    setDraggingY(`${e.pageY - startingY}`)
+  const handleDragMove = ({ x, y }: { x: number, y: number }) => {
+    if (!clicked.current) return
+    setDraggingX(x - startingX.current)
+    setDraggingY(y - startingY.current)
   }
 
-  function handleDragEnd(e: React.PointerEvent<HTMLDivElement>) {
-    e.preventDefault()
-    e.stopPropagation()
+  function handleDragEnd() {
+    unsuscribePointerPosition?.()
+    document.removeEventListener("pointerup", handleDragEnd);
+    document.removeEventListener("pointercancel", handleDragEnd);
+    clicked.current = false
+    setIsBeingDragged(false)
+    setDraggingX(0)
+    setDraggingY(0)
+    resetDraggingData()
 
-    setClicked(false)
+    // const destin = calculateClosestPile($pointerPosition.get().x, $pointerPosition.get().y)
+    // // const destin = calculateClosestPile(e.pageX, e.pageY)
+    // if (destin.where === where && destin.pileIndex === pileIndex) return
 
-    window.removeEventListener('pointermove', handleDragMove)
-    setClassOnDrag('')
-    setDraggingX('0')
-    setDraggingY('0')
+    // moveSubPile(
+    //   where,
+    //   pileIndex,
+    //   firstCardIndex,
+    //   group.numberOfCards,
+    //   destin.where,
+    //   destin.pileIndex,
+    // )
 
-    const destin = calculateClosestPile(e.pageX, e.pageY)
-    if (destin.where === where && destin.pileIndex === pileIndex) return
-
-    moveSubPile(
-      where,
-      pileIndex,
-      firsCardIndex,
-      group.numberOfCards,
-      destin.where,
-      destin.pileIndex,
-    )
-
-    // const DraggingData = {
-    //   isDraggingActive: true,
-    //   dropPositionX:    0,
-    //   dropPositionY:    0,
-    //   currentPositionX: 0,
-    //   currentPositionY: 0,
-    //   originWhere:      where,
-    //   originPileIndex:  pileIndex,
-    //   cardIndex:        firsCardIndex,
-    //   quantityOfCards:  0,
-    //   destinPileIndex:  0
-    // }
   }
+
 
   return (
     <>
@@ -139,20 +125,20 @@ export default function ShowGroupedCards(
               '--dragging-Y': `${draggingY}`,
             } as React.CSSProperties
           }
-          onPointerDown={e => handleDragStart(e)}
-          onPointerMove={e => handleDragMove(e)}
-          onPointerUp={e => handleDragEnd(e)}
-          onPointerCancel={e => handleDragEnd(e)}
-          // onPointerLeave={e => handleDragEnd(e)}
+          onPointerDown={handleDragStart}
+          // onPointerMove={handleDragMove}
+          // onPointerUp={handleDragEnd}
+          // onPointerCancel={handleDragEnd}
+          // onPointerLeave={handleDragEnd}
         >
           {
             // prettier-ignore
-            <ShowCard card={cardToRender} draggable={draggable} riseCardWithDoubleClick={() => riseCardWithDoubleClick(where, pileIndex, firsCardIndex)} />
+            <ShowCard card={cardToRender} draggable={draggable} riseCardWithDoubleClick={() => riseCardWithDoubleClick(where, pileIndex, firstCardIndex)} />
           }
 
           {nextGroup.hasCards ? (
             // prettier-ignore
-            <ShowGroupedCards where={where} pileIndex={pileIndex} firsCardIndex={firsCardIndex + 1} group={nextGroup} stacked={stacked} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
+            <ShowGroupedCards where={where} pileIndex={pileIndex} firstCardIndex={firstCardIndex + 1} group={nextGroup} stacked={stacked} moveSubPile={moveSubPile} riseCardWithDoubleClick={riseCardWithDoubleClick} />
           ) : (
             <div className="dragging-over-glow" />
           )}

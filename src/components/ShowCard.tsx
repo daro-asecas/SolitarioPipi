@@ -1,5 +1,14 @@
 import React from 'react'
 import { Card } from '../models/deck'
+import Icon from '@mdi/react';
+import { mdiCardsSpade, mdiCardsClub, mdiCardsHeart, mdiCardsDiamond } from '@mdi/js';
+
+const suitIcon = {
+  '♠': mdiCardsSpade,
+  '♣': mdiCardsClub,
+  '♥': mdiCardsHeart,
+  '♦': mdiCardsDiamond
+}
 
 interface CardProps {
   card: Card
@@ -39,13 +48,14 @@ export default class ShowCard extends React.Component<CardProps, {}> {
       return (
         <div
           // className={`card ${this.props.card.color} ${isVisible?"full-visible":""}`}
-          className={`card ${this.props.card.color} ${classDraggable}`}
+          className={`card ${this.props.card.color} ${this.props.card.suit} ${classDraggable}`}
           data-value={this.props.card.value}
           data-suit={this.props.card.suit}
           onAuxClick={handleAuxClick}
           onDoubleClick={handleDoubleClick}
         >
-          {this.props.card.suit}
+          { /* @ts-ignore */ }
+          <Icon path={suitIcon[this.props.card.suit]} size={"1em"} />
         </div>
       )
     } else if (exists) {

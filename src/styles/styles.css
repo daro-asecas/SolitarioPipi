@@ -100,8 +100,13 @@ button:active {
   margin-block-start: 0vw;
 }
 
-.card-group > .card:hover + * {
+.bottom .card-group > .card:focus + .card,
+.bottom .card-group > .card:focus + .card-group {
   margin-block-start: -2vw;
+}
+  
+.dragging-over-glow {
+  margin-block-start: 0vw;
 }
 
 .card-group.stacked :nth-child(2):not(.dragging-over-glow) {
@@ -142,67 +147,69 @@ button:active {
   display: flex;
   justify-content: center;
   align-items: center;
+  --stripe-width: max(0.2vh, 1px);
+  --stripe-color: rgba(48, 125, 255);
   background-image: repeating-linear-gradient(
       135deg,
-      black 2px,
-      black 4px,
-      transparent 4px,
-      transparent 6px,
-      black 6px,
-      black 8px,
-      transparent 8px,
-      transparent 10px,
-      black 10px,
-      black 12px,
-      transparent 12px,
-      transparent 14px,
-      black 14px,
-      black 16px,
-      transparent 16px,
-      transparent 18px,
-      black 18px,
-      black 19px,
-      transparent 19px,
-      transparent 21px,
-      black 21px,
-      black 23px,
-      transparent 23px,
-      transparent 25px,
-      black 25px,
-      black 26px,
-      transparent 26px,
-      transparent 28px
+      black calc(2 * var(--stripe-width)),
+      black calc(4 * var(--stripe-width)),
+      transparent calc(4 * var(--stripe-width)),
+      transparent calc(6 * var(--stripe-width)),
+      black calc(6 * var(--stripe-width)),
+      black calc(8 * var(--stripe-width)),
+      transparent calc(8 * var(--stripe-width)),
+      transparent calc(10 * var(--stripe-width)),
+      black calc(10 * var(--stripe-width)),
+      black calc(12 * var(--stripe-width)),
+      transparent calc(12 * var(--stripe-width)),
+      transparent calc(14 * var(--stripe-width)),
+      black calc(14 * var(--stripe-width)),
+      black calc(16 * var(--stripe-width)),
+      transparent calc(16 * var(--stripe-width)),
+      transparent calc(18 * var(--stripe-width)),
+      black calc(18 * var(--stripe-width)),
+      black calc(19 * var(--stripe-width)),
+      transparent calc(19 * var(--stripe-width)),
+      transparent calc(21 * var(--stripe-width)),
+      black calc(21 * var(--stripe-width)),
+      black calc(23 * var(--stripe-width)),
+      transparent calc(23 * var(--stripe-width)),
+      transparent calc(25 * var(--stripe-width)),
+      black calc(25 * var(--stripe-width)),
+      black calc(26 * var(--stripe-width)),
+      transparent calc(26 * var(--stripe-width)),
+      transparent calc(28 * var(--stripe-width))
     ),
     repeating-linear-gradient(
       45deg,
-      rgba(48, 103, 253) 2px,
-      rgba(48, 103, 253) 4px,
-      white 4px,
-      white 6px,
-      rgba(48, 103, 253) 6px,
-      rgba(48, 103, 253) 8px,
-      white 8px,
-      white 10px,
-      rgba(48, 103, 253) 10px,
-      rgba(48, 103, 253) 12px,
-      white 12px,
-      white 14px,
-      rgba(48, 103, 253) 14px,
-      rgba(48, 103, 253) 16px,
-      white 16px,
-      white 18px,
-      rgba(48, 103, 253) 18px,
-      rgba(48, 103, 253) 19px,
-      white 19px,
-      white 21px,
-      rgba(48, 103, 253) 21px,
-      rgba(48, 103, 253) 23px,
-      white 23px,
-      white 25px,
-      rgba(48, 103, 253) 25px,
-      rgba(48, 103, 253) 26px,
-      white 26px,
-      white 28px
+      var(--stripe-color) calc(2 * var(--stripe-width)),
+      var(--stripe-color) calc(4 * var(--stripe-width)),
+      white calc(4 * var(--stripe-width)),
+      white calc(6 * var(--stripe-width)),
+      var(--stripe-color) calc(6 * var(--stripe-width)),
+      var(--stripe-color) calc(8 * var(--stripe-width)),
+      white calc(8 * var(--stripe-width)),
+      white calc(10 * var(--stripe-width)),
+      var(--stripe-color) calc(10 * var(--stripe-width)),
+      var(--stripe-color) calc(12 * var(--stripe-width)),
+      white calc(12 * var(--stripe-width)),
+      white calc(14 * var(--stripe-width)),
+      var(--stripe-color) calc(14 * var(--stripe-width)),
+      var(--stripe-color) calc(16 * var(--stripe-width)),
+      white calc(16 * var(--stripe-width)),
+      white calc(18 * var(--stripe-width)),
+      var(--stripe-color) calc(18 * var(--stripe-width)),
+      var(--stripe-color) calc(19 * var(--stripe-width)),
+      white calc(19 * var(--stripe-width)),
+      white calc(21 * var(--stripe-width)),
+      var(--stripe-color) calc(21 * var(--stripe-width)),
+      var(--stripe-color) calc(23 * var(--stripe-width)),
+      white calc(23 * var(--stripe-width)),
+      white calc(25 * var(--stripe-width)),
+      var(--stripe-color) calc(25 * var(--stripe-width)),
+      var(--stripe-color) calc(26 * var(--stripe-width)),
+      white calc(26 * var(--stripe-width)),
+      white calc(28 * var(--stripe-width))
     );
   color: white;
   font-weight: bold;
@@ -212,68 +219,30 @@ button:active {
 
 .card {
   position: relative;
-  padding-bottom: 1.5vw;
-  background-color: white;
+  background-color: rgb(250,250,250); /* white; */
+  background-color: rgb(245,245,245); /* white; */
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: var(--card-number-font-size);
   color: black;
   text-shadow:
-    1px 1px 0.1rem rgb(255 255 255 / 75%),
-    2px 0px 0.1rem rgb(255 255 255 / 40%),
-    0px 2px 0.1rem rgb(255 255 255 / 40%);
+    1px 1px max(0.1rem, 1px) rgb(255 255 255 / 75%),
+    2px 0px max(0.1rem, 1px) rgb(255 255 255 / 40%),
+    0px 2px max(0.1rem, 1px) rgb(255 255 255 / 40%);
   user-select: none;
   overflow: hidden;
+  /* transition: margin-block-start ease-in-out 0.35s; */
+}
+
+.card svg {
+  flex: none;
+  pointer-events: none;
+}
+
+/* .card:hover {
   transition: margin-block-start ease-in-out 0.35s;
-}
-
-@media (max-width: 800px) {
-  .card {
-    font-size: 1rem;
-  }
-}
-@media (max-height: 800px) {
-  .card {
-    font-size: 1rem;
-  }
-}
-/* @media (max-width: 500px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-@media (max-height: 500px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-
-@media (max-width: 300px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-@media (max-height: 300px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-
-@media (max-width: 200px) {
-  .card {
-    font-size: 0.5rem;
-  }
-}
-@media (max-height: 200px) {
-  .card {
-    font-size: 0.5rem;
-  }
 } */
-
-.card:hover {
-  transition: margin-block-start ease-in-out 0.35s;
-}
 
 .card.red {
   color: crimson;
@@ -281,6 +250,14 @@ button:active {
 
 .card.black {
   color: black;
+}
+
+.card.♥ {
+  font-size: calc(var(--card-number-font-size) * 0.87);
+}
+
+.card.♣ {
+  font-size: calc(var(--card-number-font-size) * 0.95);
 }
 
 .card::before,
@@ -293,13 +270,15 @@ button:active {
 }
 
 .card::before {
-  top: -3%;
-  left: 3%;
+  --margin: max(3%, 2px);
+  top: calc(var(--margin) * -1);
+  left: var(--margin);
 }
 
 .card::after {
-  bottom: -3%;
-  right: 3%;
+  --margin: max(3%, 2px);
+  bottom: calc(var(--margin) * -1);
+  right: var(--margin);
   transform: rotate(180deg);
 }
 
@@ -313,13 +292,23 @@ button:active {
   filter: contrast(0.66);
 }
 
+/* Last card */
+.on-drag-over.drop-allowed .card:has(+ .dragging-over-glow) {
+  filter:brightness(1.13);
+}
+
 .on-drag {
   opacity: 100%;
   position: relative;
+  pointer-events: none;
   z-index: 999;
   /* visibility: hidden; */
   /* scale: 1.1; */
   transform: translate(calc(var(--dragging-X) * 1px), calc(var(--dragging-Y) * 1px));
+}
+
+.on-drag-over {
+  z-index: 888;
 }
 
 .dragging-over-glow {
@@ -332,21 +321,30 @@ button:active {
   box-shadow: 0;
 }
 
-.on-drag-over {
+.on-drag-over .dragging-over-glow {
+  --glow-color: 255, 255, 145;
+  background-color: rgba(var(--glow-color), 0.1);
+  box-shadow: 0 0 2vw 0.8vw rgb(var(--glow-color), 0.70);
   z-index: 1000;
+  transition: 100ms cubic-bezier(0, 1, 0.5, 1);
 }
 
-.on-drag-over .dragging-over-glow {
-  /* z-index: 999; */
-  --glow-color: 255, 255, 145;
-  background-color: rgba(var(--glow-color), 0.25);
-  box-shadow: 0 0 2vw 0.8vw rgb(var(--glow-color), 0.65);
+.on-drag-over.drop-disabled .dragging-over-glow {
+  --glow-color: 75, 75, 75;
+  background-color: rgba(gray, 0.1);
+  box-shadow: 0 0 2vw 0.8vw rgb(gray, 0.70);
 }
 
 .pile-slot.empty.on-drag-over {
   --glow-color: 255, 255, 145;
   background-color: rgba(var(--glow-color), 0.4);
-  box-shadow: 0 0 2vw 0.8vw rgb(var(--glow-color), 0.65);
+  box-shadow: 0 0 2vw 0.8vw rgb(var(--glow-color), 0.80);
+}
+
+.pile-slot.empty.on-drag-over.drop-disabled {
+  --glow-color: 75, 75, 75;
+  background-color: rgba(var(--glow-color), 0.2);
+  box-shadow: 0 0 2vw 0.8vw rgb(var(--glow-color), 0.80);
 }
 
 #extra-cards-wrapper {
@@ -362,7 +360,7 @@ button:active {
   width: var(--card-width);
   max-width: var(--card-width);
 
-  transition: ease-in-out 0.35s;
+  /* transition: ease-in-out 0.35s; */
 }
 
 #extra-cards-wrapper .card-extra:not(.full-size) {
@@ -386,7 +384,7 @@ button:active {
 /*
 
 selector {
-  
+
   transition-duration: 0.5s;
   animation: beating-border 1.5s cubic-bezier(.42,0,.58,1) infinite;
 

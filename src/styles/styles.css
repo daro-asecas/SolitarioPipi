@@ -267,18 +267,19 @@ button:active {
   font-size: 2.5vw;
   color: black;
   font-weight: bold;
+  line-height: 0.5rem;
 }
 
 .card::before {
-  --margin: max(3%, 10px);
-  top: calc(var(--margin) * -1);
-  left: var(--margin);
+  /* margin-top: 2px; */
+  top: 0%;
+  left: 3%;
 }
 
 .card::after {
-  --margin: max(3%, 10px);
-  bottom: calc(var(--margin) * -1);
-  right: var(--margin);
+  /* margin-bottom: 2px; */
+  bottom: 0%;
+  right: 3%;
   transform: rotate(180deg);
 }
 

@@ -4,7 +4,7 @@ import DealButton from './DealButton'
 export default function ShowDeck({ deck, dealFunction }: { deck: Deck; dealFunction: Function }) {
   if (deck.hasCards) {
     return (
-      <div className={'card-back'}>
+      <div className={'card-back not-draggable'}>
         <DealButton text={'Deal!'} callback={dealFunction} />
       </div>
     )

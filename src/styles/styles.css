@@ -147,7 +147,7 @@ button:active {
   display: flex;
   justify-content: center;
   align-items: center;
-  --stripe-width: max(0.1vh, 1px);
+  --stripe-width: max(0.135vw, 1.5px);
   --stripe-color: rgba(48, 125, 255);
   background-image: repeating-linear-gradient(
       135deg,
@@ -267,17 +267,17 @@ button:active {
   font-size: 2.5vw;
   color: black;
   font-weight: bold;
-  line-height: 0.5rem;
+  line-height: 2.5rem;
 }
 
 .card::before {
-  margin-top: 1px;
+  /* margin-top: 2px; */
   top: 0%;
   left: 3%;
 }
 
 .card::after {
-  margin-bottom: 1px;
+  /* margin-bottom: 2px; */
   bottom: 0%;
   right: 3%;
   transform: rotate(180deg);
@@ -355,6 +355,10 @@ button:active {
   width: calc(var(--card-width) * 2 + var(--wrapper-gap));
 }
 
+#extra-cards-wrapper:has( .on-drag) {
+  pointer-events: none;
+}
+
 #extra-cards-wrapper .card-extra.full-size {
   flex-shrink: 0;
   flex-grow: 0;
@@ -374,6 +378,7 @@ button:active {
 }
 
 #extra-cards-wrapper .card-extra:not(.full-size):hover {
+/* #extra-cards-wrapper .card-extra:not(.full-size):has(~*:has(> .on-drag)):hover { */
   flex-shrink: 0.5;
   flex-grow: 2;
   max-width: 7vw;

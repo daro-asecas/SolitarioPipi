@@ -2,7 +2,7 @@ import { useState, useContext, useRef, useEffect } from 'react'
 import { rules } from '../models/rules'
 import { MatchContext } from '../App'
 import { $draggingData } from './hooks/storeDraggingData'
-import { Deck } from '../models/deck'
+import { Card, Deck } from '../models/deck'
 import ShowGroupedCards from './ShowGroupedCards'
 
 export default function ShowPile(
@@ -54,12 +54,11 @@ export default function ShowPile(
     e.preventDefault()
     const {isDraggingActive,originWhere,originPileIndex,cardIndex,quantityOfCards} = $draggingData.get()
 
-    if (originWhere === "") return
+    if (!originWhere) return
     if (!isDraggingActive) return
     if ( originWhere===where && originPileIndex===pileIndex ) return
     
-    // const draggedGroupBaseCard = match.piles[originWhere][originPileIndex].cards[cardIndex]
-    const draggedGroupBaseCard = match.piles.bottom[originPileIndex].cards[cardIndex]
+    const draggedGroupBaseCard = match.piles[originWhere][originPileIndex].cards[cardIndex]
 
     if (
       where==="top" && quantityOfCards===1 && rules.isRisableAonB(draggedGroupBaseCard, pile.lastCard) ||

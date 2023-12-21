@@ -3,7 +3,7 @@ import { Card } from '../../models/deck'
 
 interface DraggingData {
   isDraggingActive: boolean
-  originWhere: "top" | "bottom" | "deck" | ""
+  originWhere: "top" | "bottom" | "deck" | null
   originPileIndex: number
   cardIndex: number
   // baseCard: Card | null
@@ -17,7 +17,7 @@ interface DraggingData {
 
 const emptyDraggingData = {
   isDraggingActive: false,
-  originWhere: '',
+  originWhere: null,
   originPileIndex: -1,
   cardIndex: -1,
   // baseCard: null,
@@ -29,7 +29,7 @@ const emptyDraggingData = {
   // destinPileIndex: -1,
 }
 
-export const $draggingData = writable({ ...emptyDraggingData })
+export const $draggingData = writable<DraggingData>({ ...emptyDraggingData })
 
 export const useDraggingData = () => {
   return useStore($draggingData)

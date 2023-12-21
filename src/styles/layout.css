@@ -1,12 +1,12 @@
-@media (orientation: landscape) {
+/* @media (orientation: landscape) {
   html {
     font-size: 2.8vw;
   }
-}
+} */
 
-@media (orientation: portrait) {
+/* @media (orientation: portrait) { */
   html {
-    font-size: 3vh;
+    font-size: 1vw;
   }
 
   #match-wrapper {
@@ -19,4 +19,5 @@
   #game-wrapper {
     overflow: visible;
   }
-}
+
+  /* } */

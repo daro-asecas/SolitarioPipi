@@ -270,13 +270,15 @@ button:active {
 }
 
 .card::before {
-  top: -3%;
-  left: 3%;
+  --margin: max(3%, 2px);
+  top: calc(--margin * -1);
+  left: --margin;
 }
 
 .card::after {
-  bottom: -3%;
-  right: 3%;
+  --margin: max(3%, 2px);
+  bottom: calc(--margin * -1);
+  right: --margin;
   transform: rotate(180deg);
 }
 

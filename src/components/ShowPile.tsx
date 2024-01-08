@@ -13,10 +13,12 @@ export default function ShowPile(
   const match = useContext(MatchContext)
   const pileElement = useRef<HTMLDivElement>(null)
 
-  const pileToRender =
-    pile.numberOfCards > 2 && stacked
-      ? new Deck([pile.cards[pile.numberOfCards - 2], pile.lastCard])
-      : pile
+  const pileToRender = pile
+  // const pileToRender =
+  //   pile.numberOfCards > 2 && stacked
+  //     ? new Deck([pile.cards[pile.numberOfCards - 2], pile.lastCard])
+  //     : pile
+
   const idName = `${where}-pile-slot-${pileIndex}`
   const classEmpty = pile.hasCards ? '' : ' empty'
 

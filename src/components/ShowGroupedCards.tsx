@@ -13,10 +13,11 @@ export default function ShowGroupedCards(
 ) {
   const match = useContext(MatchContext)
 
-  const groupToRender =
-    group.numberOfCards > 2 && stacked
-      ? new Deck([group.cards[group.numberOfCards - 2], group.lastCard])
-      : group
+  const groupToRender = group
+  // const groupToRender =
+  //   group.numberOfCards > 2 && stacked
+  //     ? new Deck([group.cards[group.numberOfCards - 2], group.lastCard])
+  //     : group
 
   const nextGroup = new Deck([...groupToRender.cards])
   const cardToRender = nextGroup.pop()
